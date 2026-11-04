@@ -1,9 +1,11 @@
 import { redirect } from "next/navigation";
 import { LockKeyhole, ArrowUpRight } from "lucide-react";
+import { StudioBrand } from "@/components/layout/studio-brand";
+import { studioIcons, studioTokens } from "@/config/brand";
 import { getAdminAccess } from "@/lib/auth/server";
 import { getSupabaseConfig } from "@/config/supabase";
 import { LoginForm } from "@/components/auth/login-form";
-export const metadata = { title: "Entrar" };
+export const metadata = { title: "Entrar", icons: studioIcons };
 export const dynamic = "force-dynamic";
 export default async function LoginPage({
   searchParams,
@@ -22,28 +24,19 @@ export default async function LoginPage({
         ? "Não foi possível verificar o serviço de acesso. Tente novamente em instantes."
         : "";
   return (
-    <div className="login-page">
+    <div className="studio-ui login-page" style={studioTokens}>
       <section className="login-brand-panel">
         <div className="brand">
-          <span className="brand-symbol">
-            l<span>↗</span>
-          </span>
-          <div>
-            <b>
-              loung<span className="brand-period">.</span>
-            </b>
-            <small>PROTOTYPE STUDIO</small>
-          </div>
+          <StudioBrand />
         </div>
         <div className="login-brand-copy">
-          <span className="banner-kicker">IDEIAS EM MOVIMENTO</span>
-          <h1>
-            O próximo projeto.
-            <br />A próxima possibilidade.
-          </h1>
+          <span className="banner-kicker">LOUNG PROTOTYPE STUDIO</span>
+          <h2>
+            De oportunidade a <em>presença digital.</em>
+          </h2>
           <p>
-            Um Studio para transformar oportunidades em primeiras impressões que
-            conectam.
+            Importe leads, escolha o ponto de partida e dê forma ao próximo
+            projeto.
           </p>
           <ArrowUpRight size={60} />
         </div>
@@ -54,8 +47,8 @@ export default async function LoginPage({
           <span className="login-lock">
             <LockKeyhole size={22} />
           </span>
-          <p className="eyebrow">BEM-VINDO AO SEU STUDIO</p>
-          <h2>Boas ideias começam aqui.</h2>
+          <p className="eyebrow">ACESSO ADMINISTRATIVO</p>
+          <h1>Vamos criar o próximo.</h1>
           <p className="subtitle">Entre com sua conta para continuar.</p>
           <LoginForm configured={configured} initialMessage={message} />
         </div>

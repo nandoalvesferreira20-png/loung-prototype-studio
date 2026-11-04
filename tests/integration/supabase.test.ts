@@ -3,7 +3,9 @@ import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { createServerClient } from "@supabase/ssr";
-import type { Database } from "../../src/types/database";
+import type { Database, Json } from "../../src/types/database";
+import { buildPersonalization } from "../../src/lib/generation/personalize";
+import { personalizationSchema } from "../../src/lib/generation/contracts";
 import { resolveAccess } from "../../src/lib/auth/access";
 import { supabaseAccessPort } from "../../src/lib/auth/supabase-port";
 
@@ -51,6 +53,7 @@ test(
     const leadId = randomUUID();
     const prototypeId = randomUUID();
     const importId = randomUUID();
+    let fixtureCustomization: Json = {};
     try {
       await t.test("login inválido não abre sessão", async () => {
         const { error } = await anonymous.auth.signInWithPassword({
@@ -185,6 +188,16 @@ test(
           ).error,
           null,
         );
+        const snapshot = await admin
+          .from("leads")
+          .select("*")
+          .eq("id", leadId)
+          .single();
+        assert.equal(snapshot.error, null);
+        assert.ok(snapshot.data);
+        fixtureCustomization = buildPersonalization(
+          snapshot.data,
+        ) as unknown as Json;
         assert.equal(
           (
             await admin.from("prototypes").insert({
@@ -192,6 +205,7 @@ test(
               lead_id: leadId,
               template_id: clinic.id,
               slug: `security-test-${runId}`,
+              customization_data: fixtureCustomization,
             })
           ).error,
           null,
@@ -229,6 +243,47 @@ test(
         },
       );
       await t.test(
+        "prévia autenticada A/B usa snapshot persistido e reflete edição salva",
+        async () => {
+          const headers = { cookie: cookieHeader() };
+          const site = new URL(`/preview/prototipos/${prototypeId}`, appUrl);
+          const a = await fetch(site, { headers });
+          assert.equal(a.status, 200);
+          assert.match(await a.text(), /data-template="clinicas-a"/);
+          const bTemplate = catalog!.find((t) => t.slug === "clinicas-b")!;
+          const current = personalizationSchema.parse(fixtureCustomization);
+          const reviewed = {
+            ...current,
+            confirmedOrigin: "admin_review",
+            confirmed: {
+              ...current.confirmed,
+              name: `Clínica revisada fictícia ${runId}`,
+            },
+          } as const;
+          const edited = await admin.rpc("edit_prototype", {
+            p_id: prototypeId,
+            p_revision: 1,
+            p_template_id: bTemplate.id,
+            p_data: reviewed as unknown as Json,
+          });
+          assert.equal(edited.error, null);
+          const b = await fetch(site, { headers });
+          assert.equal(b.status, 200);
+          assert.match(b.headers.get("cache-control") ?? "", /no-store/);
+          const html = await b.text();
+          assert.match(html, /data-template="clinicas-b"/);
+          assert.ok(html.includes(`Clínica revisada fictícia ${runId}`));
+          assert.doesNotMatch(
+            html,
+            /sourceLeadId|sourceUpdatedAt|confirmedOrigin/,
+          );
+          assert.equal(
+            (await fetch(new URL(`/p/security-test-${runId}`, appUrl))).status,
+            404,
+          );
+        },
+      );
+      await t.test(
         "banco impede duplicidade de protótipo e template incompatível",
         async () => {
           assert.equal(
@@ -237,6 +292,7 @@ test(
                 lead_id: leadId,
                 template_id: clinic.id,
                 slug: `duplicate-${runId}`,
+                customization_data: fixtureCustomization,
               })
             ).error?.code,
             "23505",
@@ -248,7 +304,7 @@ test(
                 .update({ template_id: lawyer.id })
                 .eq("id", prototypeId)
             ).error?.code,
-            "23503",
+            "23514",
           );
           assert.equal(
             (
@@ -279,6 +335,8 @@ test(
             "/prototipos",
             "/templates",
             "/configuracoes",
+            `/preview/prototipos/${prototypeId}`,
+            `/prototipos/${prototypeId}/preview`,
           ]) {
             const denied = await fetch(new URL(path, appUrl), {
               redirect: "manual",
@@ -332,6 +390,8 @@ test(
             "/prototipos",
             "/templates",
             "/configuracoes",
+            `/preview/prototipos/${prototypeId}`,
+            `/prototipos/${prototypeId}/preview`,
           ]) {
             const denied = await fetch(new URL(path, appUrl), {
               headers: { cookie: header },

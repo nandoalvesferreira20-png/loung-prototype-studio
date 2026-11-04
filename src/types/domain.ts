@@ -21,7 +21,7 @@ export interface Template {
   variant: Variant;
   name: string;
   description: string;
-  developmentStatus: "planejado";
+  developmentStatus: "planejado" | "disponivel";
 }
 export interface Lead {
   id: string;

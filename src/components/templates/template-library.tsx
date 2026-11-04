@@ -1,12 +1,29 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Blocks, Check, LayoutTemplate } from "lucide-react";
 import { niches, templates } from "@/config/catalog";
 import type { NicheId, Template } from "@/types/domain";
 function TemplatePreview({ template }: { template: Template }) {
+  const photographs: Record<string, string> = {
+    "clinicas-A": "/templates/clinics/shared/clinic-reception-hero.png",
+    "clinicas-B": "/templates/clinics/shared/clinic-room-structure.png",
+    "advocacia-A": "/templates/law/shared/law-office-reception.png",
+    "advocacia-B": "/templates/law/modern/hero-office.png",
+    "imobiliarias-A":
+      "/templates/real-estate/shared/real-estate-luxury-house-hero.png",
+    "imobiliarias-B":
+      "/templates/real-estate/shared/real-estate-apartment-interior.png",
+    "restaurantes-A":
+      "/templates/restaurants/shared/restaurant-dining-room.png",
+    "restaurantes-B":
+      "/templates/restaurants/shared/restaurant-bar-ambience.png",
+  };
   return (
     <div
       className={`template-preview preview-${template.nicheId} variant-${template.variant}`}
+      data-template={template.id}
       aria-label={`Representação conceitual de ${template.name}`}
     >
       <div className="mini-browser">
@@ -90,9 +107,12 @@ function TemplatePreview({ template }: { template: Template }) {
             </span>
           </div>
           <div className="mini-image">
-            <span />
-            <span />
-            <span />
+            <Image
+              src={photographs[template.id]}
+              alt=""
+              fill
+              sizes="(max-width: 600px) 45vw, 25vw"
+            />
           </div>
         </div>
         <div className="mini-services">
@@ -155,9 +175,16 @@ export function TemplateLibrary() {
                 <code>{template.id}</code>
                 <span className="development">
                   <span />
-                  Planejado
+                  {template.developmentStatus === "disponivel"
+                    ? "Prévia privada disponível"
+                    : "Planejado"}
                 </span>
               </div>
+              {template.developmentStatus === "disponivel" && (
+                <Link href="/prototipos" className="button">
+                  Abrir protótipos ↗
+                </Link>
+              )}
             </div>
           </article>
         ))}
@@ -167,9 +194,9 @@ export function TemplateLibrary() {
         <div>
           <strong>Uma base, muitas possibilidades.</strong>
           <p>
-            Prévias conceituais, sem páginas funcionais nesta fase. Cada nicho
-            terá dois templates com distribuição equilibrada e troca manual
-            futura.
+            As miniaturas são representações conceituais com fotografias
+            ilustrativas. Para conferir qualquer um dos oito sites com os dados
+            salvos, abra um protótipo e clique em Ver site.
           </p>
         </div>
         <Check size={20} />

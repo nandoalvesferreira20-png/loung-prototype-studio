@@ -1,0 +1,8 @@
+empresa;categoria_google;telefone;endereço;município;uf;site;url_google_maps;place_id
+Clínica Horizonte Exemplo;Odontologia;+55 (11) 00123456;Rua Exemplo 10;São Paulo;SP;https://clinica.example;;ficticio-clinica-01
+Advocacia Horizonte Exemplo;Escritório jurídico;0011987654;Rua Modelo 20;São Paulo;SP;;;ficticio-advocacia-01
+Imobiliária Horizonte Exemplo;Corretor de imóveis;;Rua Modelo 30;São Paulo;SP;;;ficticio-imobiliaria-01
+Restaurante Horizonte Exemplo;Pizzaria;;;São Paulo;SP;https://restaurante.example;;ficticio-restaurante-01
+Empresa Para Revisar;Consultoria;;;;SP;;;
+Clínica Horizonte Exemplo;Odontologia;+55 (11) 00123456;Rua Exemplo 10;São Paulo;SP;https://clinica.example;;ficticio-clinica-01
+;Psicologia;;;;SP;;;

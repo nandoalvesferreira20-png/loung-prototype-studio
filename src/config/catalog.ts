@@ -33,7 +33,7 @@ export const templates: readonly Template[] = [
     name: "Institucional Premium",
     description:
       "Uma presença acolhedora, com foco na confiança e na especialidade da clínica.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "clinicas-B",
@@ -41,7 +41,7 @@ export const templates: readonly Template[] = [
     variant: "B",
     name: "Serviços e Agendamentos",
     description: "Serviços em destaque e uma jornada direta até o agendamento.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "advocacia-A",
@@ -49,7 +49,7 @@ export const templates: readonly Template[] = [
     variant: "A",
     name: "Clássico e Sofisticado",
     description: "Tradição e autoridade em uma composição editorial sóbria.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "advocacia-B",
@@ -58,7 +58,7 @@ export const templates: readonly Template[] = [
     name: "Moderno e Minimalista",
     description:
       "Clareza e precisão para apresentar áreas de atuação e equipe.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "imobiliarias-A",
@@ -67,7 +67,7 @@ export const templates: readonly Template[] = [
     name: "Imobiliária Premium",
     description:
       "Uma vitrine elegante para imóveis e oportunidades exclusivas.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "imobiliarias-B",
@@ -75,7 +75,7 @@ export const templates: readonly Template[] = [
     variant: "B",
     name: "Corretor Pessoal",
     description: "Atendimento próximo, marca pessoal e imóveis selecionados.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "restaurantes-A",
@@ -84,7 +84,7 @@ export const templates: readonly Template[] = [
     name: "Gastronômico Premium",
     description:
       "Atmosfera e identidade para valorizar a experiência gastronômica.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
   {
     id: "restaurantes-B",
@@ -93,7 +93,7 @@ export const templates: readonly Template[] = [
     name: "Cardápio e Pedidos",
     description:
       "Um cardápio acessível com caminho simples para novos pedidos.",
-    developmentStatus: "planejado",
+    developmentStatus: "disponivel",
   },
 ];
 export const importFields: readonly ImportField[] = [
@@ -128,8 +128,8 @@ export const importFields: readonly ImportField[] = [
 ];
 export const studioConfig = {
   name: "Loung Prototype Studio",
-  mode: "demonstration",
-  phase: "2.1",
+  mode: "administrative",
+  phase: "4.1",
 } as const;
 export const publicationLabels = {
   rascunho: "Rascunho",

@@ -1,0 +1,1192 @@
+/* Modern law: isolated from all approved templates and from the Studio. */
+.lawModern {
+  --lm-primary: #102d43;
+  --lm-secondary: #193c56;
+  --lm-accent: #62788b;
+  --lm-paper: #f6f6f3;
+  --lm-white: #fff;
+  --lm-line: #e8ebed;
+  --lm-text: #202a32;
+  --lm-font: Arial, Helvetica, sans-serif;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  min-height: 100dvh;
+  background: var(--lm-white);
+  color: var(--lm-text);
+  font: 16px/1.45 var(--lm-font);
+  overflow-wrap: anywhere;
+}
+.lawModern[data-typeface="humanist"] {
+  --lm-font: "Segoe UI", Arial, sans-serif;
+}
+.lawModern *,
+.lawModern *:before,
+.lawModern *:after {
+  box-sizing: border-box;
+}
+.lawModern :where(h1, h2, h3, p, figure) {
+  margin: 0;
+}
+.lawModern :where(h1, h2, h3) {
+  font-family: var(--lm-font);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  line-height: 1.06;
+  color: inherit;
+}
+.lawModern h1 {
+  font-size: clamp(39px, 4.2vw, 64px);
+  font-weight: 800;
+}
+.lawModern h2 {
+  font-size: clamp(30px, 3.1vw, 45px);
+}
+.lawModern h3 {
+  font-size: 24px;
+}
+.lawModern a {
+  color: inherit;
+  text-decoration: none;
+}
+.lawModern a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.lawModern :is(a, button, summary):focus-visible {
+  outline: 3px solid var(--lm-accent);
+  outline-offset: 5px;
+}
+.lawModern section {
+  scroll-margin-top: 24px;
+}
+.lawModern .lmContainer {
+  width: calc(100% - 96px);
+  max-width: 1240px;
+  margin-inline: auto;
+  min-width: 0;
+}
+.lawModern .lmButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+  min-height: 46px;
+  padding: 13px 25px;
+  border: 1px solid var(--lm-primary);
+  border-radius: 0;
+  background: var(--lm-primary);
+  color: var(--lm-white);
+  font: 600 13px/1.3 var(--lm-font);
+  text-align: center;
+}
+.lawModern .lmButton:hover {
+  background: var(--lm-secondary);
+  text-decoration: none;
+}
+.lawModern .lmButtonLight {
+  background: var(--lm-white);
+  border-color: var(--lm-white);
+  color: var(--lm-primary);
+}
+.lawModern .lmButtonLight:hover {
+  background: var(--lm-paper);
+}
+.lawModern .lmTextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 36px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lm-primary);
+}
+.lawModern .lmDemo {
+  display: block;
+  font-size: 10px;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--lm-accent) 70%, var(--lm-text));
+  margin-top: 14px;
+}
+.lawModern .lmSkip {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  transform: translateY(-150%);
+  padding: 12px;
+  background: var(--lm-white);
+  color: var(--lm-primary);
+  z-index: 20;
+}
+.lawModern .lmSkip:focus {
+  transform: none;
+}
+.lawModern .lmHeader {
+  background: var(--lm-white);
+  border-bottom: 1px solid var(--lm-line);
+  position: relative;
+  z-index: 5;
+}
+.lawModern .lmHeader > .lmContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  min-height: 84px;
+  padding-block: 15px;
+}
+.lawModern .lmIdentity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 35%;
+  min-width: 0;
+  color: var(--lm-primary);
+}
+.lawModern .lmIdentity img {
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.lawModern .lmIdentity > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.lawModern .lmIdentity strong {
+  font-size: 21px;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+.lawModern .lmIdentity small {
+  font-size: 12px;
+  line-height: 1.15;
+}
+.lawModern .lmMonogram {
+  font-size: 28px;
+  font-weight: 700;
+  border-left: 3px solid var(--lm-primary);
+  padding-left: 8px;
+  line-height: 1;
+  max-width: 115px;
+  letter-spacing: -0.07em;
+}
+.lawModern .lmGeometry {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  position: relative;
+  background: var(--lm-primary);
+  clip-path: polygon(0 0, 100% 12%, 100% 100%, 0 100%);
+}
+.lawModern .lmGeometry:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--lm-accent);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.lawModern .lmGeometry:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--lm-white);
+  clip-path: polygon(95% 0, 100% 4%, 4% 100%, 0 95%);
+}
+.lawModern .menuLinks {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 12px;
+}
+.lawModern .menuLinks > a {
+  padding: 10px 0;
+  min-height: 40px;
+}
+.lawModern .menuLinks > a:first-child {
+  border-bottom: 2px solid var(--lm-primary);
+}
+.lawModern .menuToggle {
+  display: none;
+  background: var(--lm-white);
+  border: 1px solid var(--lm-primary);
+  border-radius: 0;
+  color: var(--lm-primary);
+  padding: 10px 12px;
+  font: inherit;
+  min-height: 44px;
+}
+.lawModern .lmHeaderCta {
+  font-size: 12px;
+  min-height: 40px;
+  padding: 10px 24px;
+  flex-shrink: 0;
+}
+.lawModern .lmHero {
+  position: relative;
+  min-height: 510px;
+  background: var(--lm-paper);
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+  overflow: hidden;
+}
+.lawModern .lmHeroVisual {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: 64%;
+  z-index: -1;
+  clip-path: polygon(19% 0, 100% 0, 100% 100%, 0 100%);
+}
+.lawModern .lmHeroCopy {
+  max-width: 46%;
+  padding: 0 22px 0 30px;
+  margin: 55px 0;
+  border-left: 2px solid var(--lm-primary);
+}
+.lawModern .lmHero h1 {
+  max-width: 14ch;
+  color: var(--lm-primary);
+  margin-bottom: 24px;
+}
+.lawModern .lmHeroCopy > p {
+  font-size: 18px;
+  line-height: 1.45;
+  max-width: 34ch;
+  margin-bottom: 29px;
+}
+.lawModern .lmHero .lmDemo {
+  max-width: 39ch;
+  font-size: 9px;
+}
+.lawModern .lmPhoto {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  background: var(--lm-line);
+  margin: 0;
+}
+.lawModern .lmPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.lawModern .lmPhoto-hero img {
+  position: absolute;
+  inset: 0;
+}
+.lawModern .lmPhoto figcaption {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  right: 12px;
+  max-width: calc(100% - 24px);
+  width: fit-content;
+  padding: 5px 8px;
+  background: #fffffff0;
+  color: #263c4d;
+  font: 10px/1.3 var(--lm-font);
+}
+.lawModern .lmPhoto-hero figcaption {
+  left: auto;
+  right: 12px;
+  max-width: 75%;
+}
+.lawModern .lmPhotoFallback {
+  height: 100%;
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  background: var(--lm-paper);
+  color: var(--lm-secondary);
+  font-size: 14px;
+  text-align: center;
+}
+.lawModern .lmManifesto {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  padding-block: 47px;
+  align-items: center;
+}
+.lawModern .lmManifesto h2 {
+  max-width: 25ch;
+  font-size: clamp(30px, 3.2vw, 46px);
+}
+.lawModern .lmManifesto p {
+  border-left: 2px solid var(--lm-accent);
+  padding: 0 0 0 55px;
+  max-width: 51ch;
+  font-size: 16px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+.lawModern .lmAreas {
+  background: var(--lm-paper);
+  padding-block: 40px;
+}
+.lawModern .lmAreas h2 {
+  margin-bottom: 25px;
+}
+.lawModern .lmSectionIntro {
+  max-width: 80ch;
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+.lawModern .lmAreasGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.lawModern .lmAreasGrid article {
+  padding: 22px 35px 25px;
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  border-right: 1px solid
+    color-mix(in srgb, var(--lm-line) 78%, var(--lm-accent));
+  min-width: 0;
+}
+.lawModern .lmAreasGrid article:nth-child(3n) {
+  border-right: 0;
+}
+.lawModern .lmAreasGrid article:nth-child(n + 4) {
+  border-top: 1px solid color-mix(in srgb, var(--lm-line) 78%, var(--lm-accent));
+}
+.lawModern .lmAreasGrid article:first-child,
+.lawModern .lmAreasGrid article:nth-child(3n + 1) {
+  padding-left: 15px;
+}
+.lawModern .lmAreaNumber {
+  font-size: 29px;
+  font-weight: 700;
+  color: var(--lm-accent);
+  line-height: 1;
+  margin-bottom: 10px;
+  letter-spacing: -0.04em;
+}
+.lawModern .lmAreasGrid h3 {
+  font-size: 25px;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.lawModern .lmAreasGrid p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 13px;
+  max-width: 36ch;
+}
+.lawModern .lmAreasGrid .lmTextLink {
+  margin-top: auto;
+}
+.lawModern .lmAreasGrid[data-columns="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lawModern .lmAreasGrid[data-columns="1"] article {
+  border-right: 0;
+  padding-left: 15px;
+}
+.lawModern .lmAreasGrid[data-columns="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.lawModern .lmAreasGrid[data-columns="2"] article:nth-child(2n) {
+  border-right: 0;
+}
+.lawModern .lmMore {
+  margin-top: 15px;
+}
+.lawModern .lmMore summary {
+  cursor: pointer;
+  padding: 15px 0;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+}
+.lawModern .lmMore summary svg {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.lawModern .lmAbout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  max-width: 1440px;
+  margin: 25px auto 0;
+  align-items: center;
+  padding-right: max(48px, calc((min(100vw, 1440px) - 1240px) / 2));
+}
+.lawModern .lmAbout > .lmPhoto {
+  height: 365px;
+}
+.lawModern .lmAbout > div {
+  padding: 20px 0;
+}
+.lawModern .lmAbout h2 {
+  max-width: 23ch;
+  margin-bottom: 20px;
+}
+.lawModern .lmAbout p {
+  font-size: 15px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+.lawModern .lmAbout .lmButton {
+  margin-top: 26px;
+}
+.lawModern .lmAbout .lmDemo {
+  font-size: 10px;
+}
+.lawModern .lmTeam {
+  padding-block: 45px 35px;
+}
+.lawModern .lmTeam h2 {
+  margin-bottom: 28px;
+}
+.lawModern .lmTeamGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px;
+}
+.lawModern .lmTeamGrid article {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 28px;
+  align-items: start;
+  min-width: 0;
+}
+.lawModern .lmTeamGrid .lmPhoto {
+  height: 270px;
+}
+.lawModern .lmTeamGrid article > div:last-child {
+  padding-top: 12px;
+}
+.lawModern .lmTeamGrid h3 {
+  font-size: 23px;
+  line-height: 1.15;
+  margin-bottom: 9px;
+}
+.lawModern .lmTeamGrid p {
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-line;
+  margin-top: 8px;
+}
+.lawModern .lmTeamGrid p.lmPersonArea {
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.lawModern .lmPersonRule {
+  display: block;
+  width: 50px;
+  height: 1px;
+  background: var(--lm-accent);
+  margin: 20px 0;
+}
+.lawModern .lmTeamGrid .lmTextLink {
+  margin-top: 15px;
+  font-size: 12px;
+}
+.lawModern .lmPersonInitials {
+  height: 230px;
+  background: var(--lm-paper);
+  color: var(--lm-secondary);
+  font-size: 55px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+.lawModern .lmTeamGrid[data-single="true"] {
+  grid-template-columns: 1fr;
+  max-width: 1000px;
+}
+.lawModern .lmTeamGrid[data-single="true"] article {
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+.lawModern .lmConversion {
+  background: var(--lm-primary);
+  color: var(--lm-white);
+  padding-block: 35px;
+  margin-top: 20px;
+}
+.lawModern .lmConversion > .lmContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+}
+.lawModern .lmConversion > .lmContainer > div {
+  border-left: 2px solid var(--lm-line);
+  padding-left: 45px;
+}
+.lawModern .lmConversion h2 {
+  max-width: 34ch;
+  font-size: clamp(29px, 3.05vw, 43px);
+  line-height: 1.08;
+}
+.lawModern .lmConversion p {
+  max-width: 66ch;
+  font-size: 16px;
+  margin-top: 18px;
+  line-height: 1.45;
+}
+.lawModern .lmConversion .lmButton {
+  flex-shrink: 0;
+  min-width: 170px;
+}
+.lawModern .lmContact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 65px;
+  align-items: center;
+  max-width: 1440px;
+  margin: 24px auto 20px;
+  padding-left: max(48px, calc((min(100vw, 1440px) - 1240px) / 2));
+}
+.lawModern .lmContact > div {
+  border-left: 2px solid var(--lm-secondary);
+  padding-left: 30px;
+  margin: 20px 0;
+}
+.lawModern .lmContact h2 {
+  margin-bottom: 17px;
+}
+.lawModern .lmContact p {
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 46ch;
+  white-space: pre-line;
+}
+.lawModern .lmContactList {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.lawModern .lmContactList a {
+  display: flex;
+  align-items: start;
+  gap: 22px;
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 32px;
+}
+.lawModern .lmContactList svg {
+  color: var(--lm-primary);
+  flex-shrink: 0;
+}
+.lawModern .lmContact > .lmPhoto {
+  height: 340px;
+}
+.lawModern .lmFooter {
+  background: var(--lm-primary);
+  color: var(--lm-white);
+  padding-top: 30px;
+}
+.lawModern .lmFooterGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr 1fr 1.2fr;
+  gap: 36px;
+}
+.lawModern .lmFooterGrid > div {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.lawModern .lmFooter .lmIdentity {
+  color: var(--lm-white);
+  max-width: 100%;
+  margin-bottom: 13px;
+}
+.lawModern .lmFooter .lmMonogram {
+  border-color: var(--lm-white);
+}
+.lawModern .lmFooter .lmGeometry {
+  background: var(--lm-white);
+}
+.lawModern .lmFooter .lmGeometry:before {
+  background: var(--lm-primary);
+}
+.lawModern .lmFooter .lmIdentity strong {
+  font-size: 21px;
+}
+.lawModern .lmFooter .lmIdentity small {
+  font-size: 11px;
+}
+.lawModern .lmFooterGrid > div:first-child {
+  border-right: 1px solid #ffffff60;
+  padding-right: 30px;
+}
+.lawModern .lmFooter h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.lawModern .lmFooter p {
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 31ch;
+}
+.lawModern .lmFooterGrid > div > a {
+  font-size: 12px;
+  line-height: 1.4;
+  min-height: 25px;
+}
+.lawModern .lmFooterContact {
+  display: flex;
+  align-items: start;
+  gap: 13px;
+  margin-bottom: 5px;
+}
+.lawModern .lmFooterContact > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.lawModern .lmSocials {
+  display: flex;
+  gap: 17px;
+  margin-top: 9px;
+}
+.lawModern .lmSocials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  min-height: 32px;
+}
+.lawModern .lmFooter .lmLegal {
+  grid-column: 1/-1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-top: 1px solid #ffffff60;
+  padding: 17px 0;
+  margin-top: 5px;
+  font-size: 10px;
+}
+.lawModern .lmFooterGrid[data-areas="false"] {
+  grid-template-columns: 1.2fr 0.8fr 1.2fr;
+}
+@media (min-width: 1440px) {
+  .lawModern .lmHero {
+    min-height: 540px;
+  }
+}
+@media (max-width: 1100px) {
+  .lawModern .lmHeaderCta {
+    display: none;
+  }
+  .lawModern .lmIdentity {
+    max-width: 44%;
+  }
+  .lawModern .menuLinks {
+    gap: 24px;
+  }
+  .lawModern .lmHeroCopy {
+    max-width: 48%;
+    padding-left: 25px;
+    margin: 43px 0;
+  }
+  .lawModern .lmHeroCopy > p {
+    font-size: 16px;
+  }
+  .lawModern .lmManifesto {
+    gap: 40px;
+  }
+  .lawModern .lmManifesto p {
+    padding-left: 35px;
+    font-size: 15px;
+  }
+  .lawModern .lmAreasGrid article {
+    padding-inline: 25px;
+  }
+  .lawModern .lmAreasGrid h3 {
+    font-size: 23px;
+  }
+  .lawModern .lmAbout {
+    gap: 35px;
+  }
+  .lawModern .lmAbout > .lmPhoto {
+    height: 355px;
+  }
+  .lawModern .lmTeamGrid {
+    gap: 28px;
+  }
+  .lawModern .lmTeamGrid article {
+    gap: 20px;
+  }
+  .lawModern .lmTeamGrid .lmPhoto {
+    height: 250px;
+  }
+  .lawModern .lmTeamGrid h3 {
+    font-size: 21px;
+  }
+  .lawModern .lmContact {
+    gap: 35px;
+  }
+  .lawModern .lmConversion > .lmContainer {
+    gap: 25px;
+  }
+  .lawModern .lmConversion > .lmContainer > div {
+    padding-left: 30px;
+  }
+  .lawModern .lmConversion p {
+    font-size: 14px;
+  }
+  .lawModern .lmFooterGrid {
+    gap: 24px;
+  }
+}
+@media (max-width: 900px) {
+  .lawModern .lmContainer {
+    width: calc(100% - 64px);
+  }
+  .lawModern .lmIdentity strong {
+    font-size: 19px;
+  }
+  .lawModern .menuLinks {
+    gap: 18px;
+    font-size: 11px;
+  }
+  .lawModern .lmHero {
+    min-height: 470px;
+  }
+  .lawModern .lmHero h1 {
+    font-size: 43px;
+    max-width: 13ch;
+  }
+  .lawModern .lmHeroCopy {
+    padding-left: 20px;
+    padding-right: 10px;
+  }
+  .lawModern .lmHeroCopy > p {
+    font-size: 15px;
+  }
+  .lawModern .lmHeroVisual {
+    width: 59%;
+  }
+  .lawModern .lmManifesto {
+    gap: 30px;
+    padding-block: 36px;
+  }
+  .lawModern .lmManifesto p {
+    padding-left: 25px;
+    font-size: 14px;
+  }
+  .lawModern .lmAreasGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lawModern .lmAreasGrid article,
+  .lawModern .lmAreasGrid article:nth-child(3n) {
+    border-right: 1px solid
+      color-mix(in srgb, var(--lm-line) 78%, var(--lm-accent));
+    padding: 22px;
+  }
+  .lawModern .lmAreasGrid article:nth-child(2n) {
+    border-right: 0;
+  }
+  .lawModern .lmAreasGrid article:nth-child(n + 3) {
+    border-top: 1px solid
+      color-mix(in srgb, var(--lm-line) 78%, var(--lm-accent));
+  }
+  .lawModern .lmAreasGrid[data-columns="1"] article {
+    border: 0;
+  }
+  .lawModern .lmAbout {
+    padding-right: 32px;
+    gap: 28px;
+  }
+  .lawModern .lmAbout h2 {
+    font-size: 31px;
+  }
+  .lawModern .lmAbout > .lmPhoto {
+    height: 340px;
+  }
+  .lawModern .lmAbout p {
+    font-size: 14px;
+  }
+  .lawModern .lmTeamGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .lawModern .lmTeamGrid article {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 30px;
+  }
+  .lawModern .lmContact {
+    padding-left: 32px;
+  }
+  .lawModern .lmContact > div {
+    padding-left: 24px;
+  }
+  .lawModern .lmContactList a {
+    font-size: 13px;
+    gap: 16px;
+  }
+  .lawModern .lmFooterGrid,
+  .lawModern .lmFooterGrid[data-areas="false"] {
+    grid-template-columns: 1fr 1fr;
+  }
+  .lawModern .lmFooterGrid > div:first-child {
+    border: 0;
+    padding: 0;
+  }
+  .lawModern .lmFooterGrid > div:nth-child(4):not(.lmLegal) {
+    grid-column: 2;
+  }
+  .lawModern .lmConversion h2 {
+    font-size: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .lawModern .lmContainer {
+    width: calc(100% - 40px);
+  }
+  .lawModern .lmHeader > .lmContainer {
+    min-height: 80px;
+    gap: 13px;
+    padding-block: 15px;
+  }
+  .lawModern .lmHeader .lmIdentity {
+    max-width: 74%;
+    gap: 9px;
+  }
+  .lawModern .lmIdentity strong {
+    font-size: 18px;
+  }
+  .lawModern .lmIdentity small {
+    font-size: 11px;
+  }
+  .lawModern .lmMonogram {
+    font-size: 26px;
+  }
+  .lawModern .lmHeader nav {
+    margin-left: auto;
+  }
+  .lawModern .menuToggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .lawModern .menuLinks {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 15px 22px 20px;
+    background: var(--lm-white);
+    border-bottom: 1px solid var(--lm-line);
+  }
+  .lawModern .menuLinks[data-open="true"] {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .lawModern .menuLinks > a {
+    font-size: 13px;
+    min-height: 45px;
+  }
+  .lawModern .menuLinks > a:first-child {
+    border: 0;
+  }
+  .lawModern .lmHero {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: visible;
+  }
+  .lawModern .lmHero > .lmContainer {
+    order: 0;
+    width: calc(100% - 40px);
+  }
+  .lawModern .lmHeroCopy {
+    max-width: none;
+    margin: 30px 0;
+    padding-left: 22px;
+    padding-right: 0;
+  }
+  .lawModern .lmHero h1 {
+    font-size: clamp(35px, 6.5vw, 45px);
+    max-width: 19ch;
+    margin-bottom: 21px;
+  }
+  .lawModern .lmHeroCopy > p {
+    font-size: 15px;
+    max-width: 43ch;
+    margin-bottom: 24px;
+  }
+  .lawModern .lmHeroVisual {
+    order: 1;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 280px;
+    clip-path: polygon(6% 0, 100% 0, 100% 100%, 0 100%);
+    z-index: 0;
+  }
+  .lawModern .lmHero .lmDemo {
+    font-size: 9px;
+    max-width: none;
+  }
+  .lawModern .lmPhoto figcaption {
+    font-size: 9px;
+    bottom: 9px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+  }
+  .lawModern .lmPhoto-hero figcaption {
+    left: auto;
+    right: 12px;
+    max-width: 85%;
+  }
+  .lawModern h2 {
+    font-size: 31px;
+  }
+  .lawModern .lmManifesto {
+    grid-template-columns: 1fr;
+    padding-block: 32px;
+    gap: 23px;
+  }
+  .lawModern .lmManifesto h2 {
+    font-size: 32px;
+    max-width: 24ch;
+  }
+  .lawModern .lmManifesto p {
+    padding-left: 20px;
+    max-width: none;
+    font-size: 15px;
+  }
+  .lawModern .lmAreas {
+    padding-block: 30px;
+  }
+  .lawModern .lmAreas h2 {
+    margin-bottom: 20px;
+  }
+  .lawModern .lmAreasGrid article {
+    padding: 20px 16px;
+  }
+  .lawModern .lmAreasGrid article:nth-child(3n) {
+    padding: 20px 16px;
+  }
+  .lawModern .lmAreasGrid article:first-child,
+  .lawModern .lmAreasGrid article:nth-child(3n + 1) {
+    padding-left: 10px;
+  }
+  .lawModern .lmAreaNumber {
+    font-size: 27px;
+  }
+  .lawModern .lmAreasGrid h3 {
+    font-size: 22px;
+  }
+  .lawModern .lmAreasGrid p {
+    font-size: 13px;
+  }
+  .lawModern .lmAreasGrid .lmTextLink {
+    font-size: 12px;
+  }
+  .lawModern .lmAreasGrid[data-columns="1"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lawModern .lmAbout {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0;
+    margin-top: 22px;
+  }
+  .lawModern .lmAbout > .lmPhoto {
+    height: 280px;
+    width: calc(100% - 40px);
+    margin-inline: auto;
+  }
+  .lawModern .lmAbout > div {
+    padding: 27px 22px 0;
+  }
+  .lawModern .lmAbout h2 {
+    font-size: 32px;
+    max-width: 25ch;
+  }
+  .lawModern .lmAbout p {
+    font-size: 15px;
+  }
+  .lawModern .lmAbout .lmButton {
+    margin-top: 22px;
+  }
+  .lawModern .lmTeam {
+    padding-block: 35px;
+  }
+  .lawModern .lmTeam h2 {
+    font-size: 30px;
+    max-width: 24ch;
+  }
+  .lawModern .lmTeamGrid article,
+  .lawModern .lmTeamGrid[data-single="true"] article {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 20px;
+  }
+  .lawModern .lmTeamGrid .lmPhoto {
+    height: 240px;
+  }
+  .lawModern .lmTeamGrid h3 {
+    font-size: 22px;
+  }
+  .lawModern .lmTeamGrid p {
+    font-size: 12px;
+  }
+  .lawModern .lmTeamGrid p.lmPersonArea {
+    font-size: 12px;
+  }
+  .lawModern .lmTeamGrid article > div:last-child {
+    padding-top: 5px;
+  }
+  .lawModern .lmPersonRule {
+    margin: 15px 0;
+  }
+  .lawModern .lmPersonInitials {
+    height: 220px;
+    font-size: 36px;
+  }
+  .lawModern .lmConversion {
+    padding-block: 28px;
+    margin-top: 25px;
+  }
+  .lawModern .lmConversion > .lmContainer {
+    flex-direction: column;
+    align-items: start;
+    gap: 23px;
+  }
+  .lawModern .lmConversion > .lmContainer > div {
+    padding-left: 22px;
+  }
+  .lawModern .lmConversion h2 {
+    font-size: 30px;
+    max-width: 25ch;
+  }
+  .lawModern .lmConversion p {
+    font-size: 14px;
+    margin-top: 16px;
+  }
+  .lawModern .lmConversion .lmButton {
+    margin-left: 24px;
+  }
+  .lawModern .lmContact {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 0;
+    margin: 22px auto;
+  }
+  .lawModern .lmContact > div {
+    margin: 15px 22px;
+    padding-left: 22px;
+  }
+  .lawModern .lmContact h2 {
+    font-size: 32px;
+  }
+  .lawModern .lmContact p {
+    font-size: 15px;
+  }
+  .lawModern .lmContactList {
+    gap: 19px;
+  }
+  .lawModern .lmContactList a {
+    font-size: 13px;
+    min-height: 40px;
+    gap: 16px;
+  }
+  .lawModern .lmContact > .lmPhoto {
+    height: 270px;
+    width: calc(100% - 40px);
+    margin-inline: auto;
+  }
+  .lawModern .lmFooter {
+    padding-top: 30px;
+  }
+  .lawModern .lmFooterGrid,
+  .lawModern .lmFooterGrid[data-areas="false"] {
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+  .lawModern .lmFooterGrid > div:first-child {
+    grid-column: 1/-1;
+  }
+  .lawModern .lmFooterGrid > div:nth-child(4):not(.lmLegal) {
+    grid-column: 1/-1;
+  }
+  .lawModern .lmFooterGrid > div > a {
+    min-height: 34px;
+  }
+  .lawModern .lmFooter .lmIdentity {
+    max-width: 100%;
+  }
+  .lawModern .lmFooter p {
+    max-width: 48ch;
+  }
+  .lawModern .lmFooter .lmLegal {
+    flex-direction: column;
+    align-items: start;
+    gap: 9px;
+    padding: 18px 0;
+  }
+  .lawModern .lmSocials a {
+    min-width: 38px;
+    min-height: 40px;
+  }
+}
+@media (max-width: 390px) {
+  .lawModern .lmAreasGrid,
+  .lawModern .lmAreasGrid[data-columns="2"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lawModern .lmAreasGrid article,
+  .lawModern .lmAreasGrid article:nth-child(3n) {
+    border-right: 0;
+    padding: 22px 8px;
+    border-top: 1px solid
+      color-mix(in srgb, var(--lm-line) 78%, var(--lm-accent));
+  }
+  .lawModern .lmAreasGrid article:first-child {
+    border-top: 0;
+  }
+  .lawModern .lmHeroCopy {
+    margin-block: 27px;
+    padding-left: 18px;
+  }
+  .lawModern .lmHero h1 {
+    font-size: 35px;
+  }
+  .lawModern .lmHeroVisual {
+    height: 245px;
+  }
+  .lawModern .lmTeamGrid article,
+  .lawModern .lmTeamGrid[data-single="true"] article {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .lawModern .lmTeamGrid .lmPhoto {
+    height: 310px;
+    max-width: 260px;
+  }
+  .lawModern .lmPersonInitials {
+    height: 180px;
+  }
+  .lawModern .lmFooterGrid,
+  .lawModern .lmFooterGrid[data-areas="false"] {
+    grid-template-columns: 1fr;
+  }
+  .lawModern .lmFooterGrid > div {
+    grid-column: 1/-1;
+  }
+}

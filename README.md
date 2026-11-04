@@ -1,4 +1,4 @@
-# Loung Prototype Studio — Fase 2.1
+# Loung Prototype Studio — Fase 4.1
 
 Ferramenta interna da Loung Tech. Next.js 16 App Router, React, TypeScript rigoroso, Tailwind CSS, Lucide e Supabase Auth/PostgreSQL. O design administrativo aprovado foi preservado.
 
@@ -6,7 +6,7 @@ Ferramenta interna da Loung Tech. Next.js 16 App Router, React, TypeScript rigor
 
 Autenticação e autorização implementadas no código. **A integração Supabase só pode ser considerada validada após configurar um projeto, aplicar as migrations e executar os testes reais.** Sem configuração válida, o acesso privado permanece bloqueado e `/login` informa a pendência; não há bypass demonstrativo.
 
-As telas administrativas continuam exibindo exemplos fictícios identificados. O catálogo persistido contém somente os oito templates oficiais. Nenhuma empresa, lead, importação ou protótipo fictício é inserido no banco. A camada de leitura persistida não faz fallback para exemplos. Importação, geração, edição, publicação e persistência de preferências continuam fora desta fase.
+Importação CSV/XLSX, histórico, indicadores e gerenciamento utilizam dados persistidos. Os oito templates A/B possuem prévia privada. A Fase 5.1 implementa publicação manual por snapshot aprovado, links `/p/[slug]`, republicação e despublicação. Consulte o [guia de publicação e configuração](docs/publicacao-fase-5.1.md), o [motor da Fase 3.1](docs/geracao-fase-3.1.md) e a [importação da Fase 2.2](docs/importacao-fase-2.2.md). Nenhum dado fictício é inserido automaticamente no Supabase. A migration incremental de publicação deve ser revisada e aplicada antes de usar o fluxo remoto.
 
 ## Executar
 
@@ -110,17 +110,17 @@ const supabase = await createServerSupabaseClient();
 
 Enums: `niche` (`clinicas`, `advocacia`, `imobiliarias`, `restaurantes`), `template_variant` (`A`, `B`), `import_status` (`pending`, `processing`, `completed`, `partial`, `failed`), `template_status` (`planned`, `active`, `archived`), `publication_status` (`draft`, `review`, `published`). Rótulos demonstrativos em português ficam separados dos estados persistidos.
 
-Todos os IDs persistidos são UUIDs; identificadores conceituais da Fase 1 continuam somente na demonstração. O catálogo usa slugs como `clinicas-a` e IDs gerados pelo banco. Todos os oito templates recebem `planned`, sem sites completos.
+Todos os IDs persistidos são UUIDs; identificadores conceituais da Fase 1 continuam somente nos exemplos antigos. O catálogo usa slugs como `clinicas-a` e IDs gerados pelo banco. A migration original cadastra os oito templates como `planned`; a migration da Fase 3.1 ativa os modelos oficiais ainda planejados para gerar registros privados, preservando os arquivados. Isso não significa que os oito sites completos já estejam implementados.
 
-`prototypes.lead_id` é único. A coluna adicional `prototypes.niche`, derivada do lead por trigger, permite duas FKs compostas para garantir compatibilidade com o template sob concorrência. Alterações incompatíveis no nicho de leads/templates associados são restringidas pelas FKs. Triggers atualizam `updated_at`. Remover um lead remove seu protótipo; remover um template em uso é impedido; remover uma importação preserva leads, limpando a referência. Índices cobrem relacionamentos, nichos, status/datas e origem/referência externa. Não há deduplicação automática de leads nesta fase.
+`prototypes.lead_id` é único. A coluna adicional `prototypes.niche`, derivada do lead por trigger, permite duas FKs compostas para garantir compatibilidade com o template sob concorrência. Alterações incompatíveis no nicho de leads/templates associados são restringidas pelas FKs. Triggers atualizam `updated_at` e a edição incrementa `revision`. Remover um lead remove seu protótipo; remover um template em uso é impedido; remover uma importação preserva leads, limpando a referência. A Fase 2.2 acrescenta deduplicação e resultados por linha; a Fase 3.1 acrescenta recibos idempotentes em `prototype_generation_requests` e validação do JSONB de personalização.
 
 ### RLS
 
-Ativa nas cinco tabelas. `anon` não tem grants sobre elas. `authenticated` tem SELECT/INSERT/UPDATE/DELETE nas quatro tabelas operacionais, sempre sujeitos a `USING` e `WITH CHECK` de `private.is_admin()`. Sem TRUNCATE, grants de DDL ou escrita em associações.
+Ativa nas cinco tabelas da fundação e nas tabelas incrementais `import_lead_results` e `prototype_generation_requests`. `anon` não tem grants sobre elas. `authenticated` tem SELECT/INSERT/UPDATE/DELETE nas quatro tabelas operacionais originais, sempre sujeitos a `USING` e `WITH CHECK` de `private.is_admin()`, e SELECT/INSERT nas duas tabelas de resultados/recibos. Sem TRUNCATE, grants de DDL ou escrita em associações. Os triggers de protótipos também exigem modelos ativos, dados válidos, identidade estável e ausência de publicação nesta fase.
 
 `private.is_admin()` é `SECURITY DEFINER`, dono `postgres`, `search_path = ''`, nomes qualificados e nenhum argumento de usuário. Retorna apenas se `auth.uid()` possui associação. EXECUTE é revogado de PUBLIC/anon e concedido a authenticated. A função não deve ser exposta na API. O proprietário ignora RLS apenas para essa consulta estreita; não usamos FORCE RLS em `admin_users`, evitando reentrada na policy. A leitura da própria associação usa diretamente `user_id = auth.uid()`, sem recursão. Funções de triggers são `SECURITY INVOKER`, sem EXECUTE público.
 
-Nenhuma policy concede acesso público por status de publicação. A separação entre dados públicos de protótipos e informações internas será feita em outra fase.
+Na Fase 5.1, somente snapshots ativos de `published_prototypes` possuem leitura anônima, limitada às colunas públicas. Leads e protótipos administrativos continuam privados. As RPCs de publicação exigem autorização administrativa no banco; nenhum acesso público é concedido às tabelas privadas.
 
 ## Arquivos principais
 
@@ -186,10 +186,10 @@ Logout não invalida retroativamente um JWT de acesso copiado até ele expirar; 
 
 Inicie a aplicação sem as variáveis Supabase, defina `TEST_APP_URL` para ela e execute `npm run test:http`. Verifica login informativo, redirecionamento das cinco rotas e resposta 503 sem dados no endpoint. Não substitui a suíte Supabase real.
 
-## Pendências externas e Fase 2.2
+## Pendências externas e Fase 4.1
 
 Deploy nativo Next.js na Vercel, sem `vercel.json`, Docker ou serviços auxiliares. Configure as duas variáveis e HTTPS. **Pendências externas:** projeto Supabase, cadastro fechado, aplicação das migrations, criação/autorização das contas, regeneração dos tipos e execução da suíte real. Nenhum desses passos é presumido como realizado.
 
-Fase 2.2: importação validada no servidor, mapeamento de cabeçalhos, prévia, deduplicação e persistência usando guards e RLS. Geração, editor, publicação, IA, integração direta com Prospect, organizações e pagamentos permanecem fora do escopo. Nenhum commit ou push é feito automaticamente.
+Fase 4.1: dois sites completos para Clínicas, seis configurações de especialidade, assets conceituais locais e prévia administrativa em cinco larguras. A revisão visual em navegador e a integração autenticada em homologação permanecem pendentes conforme o guia. Demais nichos, editor visual, publicação, IA, integração direta com Prospect, organizações e pagamentos continuam fora do escopo. Nenhum deploy, commit ou push é feito automaticamente.
 
 Referências oficiais: [SSR no Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [funções e privilégios](https://supabase.com/docs/guides/database/functions).

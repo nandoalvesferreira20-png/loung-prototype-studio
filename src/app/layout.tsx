@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "@/styles/studio.css";
+import { studioFontVariables } from "@/styles/fonts";
 export const metadata: Metadata = {
   title: { default: "Loung Prototype Studio", template: "%s · Loung Studio" },
-  description: "Studio de protótipos da Loung Tech. Acesso interno — Fase 2.1.",
+  description:
+    "Loung Prototype Studio. Plataforma interna da Loung Tech para leads e protótipos privados.",
 };
 export default function RootLayout({
   children,
@@ -11,7 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body className={studioFontVariables}>{children}</body>
     </html>
   );
 }

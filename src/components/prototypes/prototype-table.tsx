@@ -1,18 +1,35 @@
-import { Eye, Pencil, Send, ArrowUpRight, Layers3 } from "lucide-react";
-import { demoLeads } from "@/data/demo";
-import { niches, templates } from "@/config/catalog";
+import { Eye, Layers3 } from "lucide-react";
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { niches } from "@/config/catalog";
 import { formatDate } from "@/lib/prototypes";
-import { StatusBadge } from "@/components/ui";
-import type { Prototype } from "@/types/domain";
+import { rendererRegistry } from "@/lib/generation/registry";
+import {
+  personalizationSchema,
+  type ManagedPrototype,
+} from "@/lib/generation/contracts";
+export const prototypeStatusLabels = {
+  draft: "Rascunho privado",
+  review: "Em revisão",
+  published: "Publicado",
+  unpublished: "Despublicado",
+} as const;
 export function PrototypeTable({
   items,
-  compact = false,
+  onInspect,
+  publication,
 }: {
-  items: readonly Prototype[];
-  compact?: boolean;
+  items: ManagedPrototype[];
+  onInspect: (item: ManagedPrototype) => void;
+  publication?: (id: string) => ReactNode;
 }) {
   return (
-    <div className="table-scroll">
+    <div
+      className="table-scroll"
+      tabIndex={0}
+      role="region"
+      aria-label="Protótipos com rolagem horizontal"
+    >
       <table>
         <thead>
           <tr>
@@ -20,95 +37,109 @@ export function PrototypeTable({
             <th>Nicho / template</th>
             <th>Status</th>
             <th>Criado em</th>
-            {!compact && <th>URL pública</th>}
-            <th>
-              <span className="sr-only">Ações futuras</span>
-            </th>
+            <th>Identificador reservado</th>
+            <th>Gerenciar</th>
           </tr>
         </thead>
         <tbody>
           {items.map((item) => {
-            const lead = demoLeads.find((l) => l.id === item.leadId)!;
-            const template = templates.find((t) => t.id === item.templateId)!;
+            const personalization = personalizationSchema.safeParse(
+              item.customization_data,
+            );
+            const name = personalization.success
+              ? personalization.data.confirmed.name
+              : item.company_name;
             return (
               <tr key={item.id}>
                 <td>
                   <div className="company-cell">
-                    <span className={`company-icon niche-${lead.nicho}`}>
-                      {lead.nome_empresa
+                    <span className={`company-icon niche-${item.niche}`}>
+                      {name
                         .split(" ")
                         .slice(0, 2)
                         .map((w) => w[0])
                         .join("")}
                     </span>
                     <div>
-                      <strong>{lead.nome_empresa}</strong>
+                      <strong>{name}</strong>
                       <small>
-                        {lead.especialidade?.name ??
-                          `${lead.cidade}, ${lead.estado}`}
+                        {personalization.success
+                          ? (personalization.data.confirmed.specialty ??
+                            "Sem especialidade informada")
+                          : "Registro anterior"}
                       </small>
                     </div>
                   </div>
                 </td>
                 <td>
                   <strong className="table-niche">
-                    {niches.find((n) => n.id === lead.nicho)?.shortName}
+                    {niches.find((n) => n.id === item.niche)?.shortName}
                   </strong>
                   <small>
-                    {template.name} · {template.variant}
+                    {item.template_name} · {item.variant}
                   </small>
                 </td>
                 <td>
-                  <StatusBadge status={item.status} />
-                </td>
-                <td className="date-cell">{formatDate(item.createdAt)}</td>
-                {!compact && (
-                  <td>
-                    <span className="muted">Indisponível na demonstração</span>
-                  </td>
-                )}
-                <td>
-                  {compact ? (
-                    <button
-                      className="icon-button"
-                      disabled
-                      title="Visualização disponível em fase futura"
-                      aria-label={`Visualizar ${lead.nome_empresa} — em breve`}
-                    >
-                      <ArrowUpRight size={18} />
-                    </button>
-                  ) : (
-                    <div className="table-actions">
-                      {[
-                        { icon: Eye, label: "Visualizar" },
-                        { icon: Pencil, label: "Editar" },
-                        { icon: Send, label: "Publicar" },
-                      ].map(({ icon: Icon, label }) => (
-                        <button
-                          key={label}
-                          className="icon-button"
-                          disabled
-                          title={`${label}: em breve`}
-                          aria-label={`${label} ${lead.nome_empresa} — em breve`}
-                        >
-                          <Icon size={16} />
-                        </button>
-                      ))}
-                    </div>
+                  <small>
+                    {item.publicationUnavailable
+                      ? "Publicação indisponível"
+                      : item.publication
+                        ? item.publication.unpublished_at
+                          ? "Despublicado"
+                          : "Site público ativo"
+                        : "Nunca publicado"}
+                  </small>
+                  {item.publication && (
+                    <small>
+                      v{item.publication.publication_version} ·{" "}
+                      {formatDate(item.publication.published_at)}
+                      {item.publication.source_revision !== item.revision
+                        ? " · Alterações não publicadas"
+                        : ""}
+                    </small>
                   )}
+                  <span
+                    className={`badge status-${item.status === "draft" ? "rascunho" : item.status === "published" ? "publicado" : "revisao"}`}
+                  >
+                    {prototypeStatusLabels[item.status]}
+                  </span>
+                </td>
+                <td className="date-cell">{formatDate(item.created_at)}</td>
+                <td>
+                  <code className="prototype-slug">/p/{item.slug}</code>
+                  <small>Publicação por snapshot aprovado</small>
+                </td>
+                <td>
+                  {publication?.(item.id)}
+                  {rendererRegistry[`${item.niche}:${item.variant}`]
+                    ?.renderer &&
+                    personalization.success && (
+                      <Link
+                        href={`/prototipos/${item.id}/preview`}
+                        className="button"
+                      >
+                        Ver site
+                      </Link>
+                    )}
+                  <button
+                    className="icon-button"
+                    onClick={() => onInspect(item)}
+                    aria-label={`Conferir dados e editar ${name}`}
+                    title="Conferir dados e editar"
+                  >
+                    <Eye size={17} />
+                  </button>
                 </td>
               </tr>
             );
           })}
         </tbody>
       </table>
-      {items.length === 0 && (
+      {!items.length && (
         <div className="empty-state">
-          <Layers3 size={32} />
+          <Layers3 size={30} />
           <h3>Nenhum protótipo encontrado</h3>
-          <p>
-            Tente outro termo ou limpe os filtros para ver todos os exemplos.
-          </p>
+          <p>Gere rascunhos a partir dos leads ou ajuste os filtros.</p>
         </div>
       )}
     </div>

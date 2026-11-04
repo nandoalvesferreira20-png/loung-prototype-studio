@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { StudioBrand } from "./studio-brand";
+import { studioTokens } from "@/config/brand";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -70,9 +72,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       previous?.focus();
     };
   }, [open, help]);
-  const active = navigation.find((item) => item.href === path);
+  const active = navigation.find(
+    (item) => path === item.href || path.startsWith(`${item.href}/`),
+  );
   return (
-    <div className="app-shell">
+    <div className="studio-ui app-shell" style={studioTokens}>
       <a className="skip-link" href="#main">
         Pular para o conteúdo
       </a>
@@ -84,19 +88,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         />
       )}
       <aside
+        id="studio-navigation"
         className={`sidebar ${open ? "is-open" : ""}`}
         aria-label="Navegação principal"
       >
         <div className="brand">
-          <span className="brand-symbol">
-            l<span>↗</span>
-          </span>
-          <div>
-            <b>
-              loung<span className="brand-period">.</span>
-            </b>
-            <small>PROTOTYPE STUDIO</small>
-          </div>
+          <Link href="/dashboard" aria-label="Loung Prototype Studio — início">
+            <StudioBrand />
+          </Link>
           <button
             className="mobile-close icon-button"
             onClick={() => setOpen(false)}
@@ -111,7 +110,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           </span>
           <div>
             <strong>Workspace Loung</strong>
-            <small>Seu espaço de criação</small>
+            <small>Prototype Studio</small>
           </div>
           <span className="workspace-tag">01</span>
         </div>
@@ -121,8 +120,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <Link
               key={href}
               href={href}
-              aria-current={path === href ? "page" : undefined}
-              className={`nav-link ${path === href ? "active" : ""}`}
+              aria-current={active?.href === href ? "page" : undefined}
+              className={`nav-link ${active?.href === href ? "active" : ""}`}
               onClick={() => setOpen(false)}
             >
               <Icon size={19} />
@@ -133,14 +132,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="sidebar-bottom">
           <div className="phase-card">
-            <FlaskConical size={20} />
-            <span className="phase-tag">FASE 2.1</span>
+            <Blocks size={20} />
+            <span className="phase-tag">BIBLIOTECA</span>
             <strong>
-              Grandes ideias.
+              Oito possibilidades.
               <br />
-              Primeiros passos.
+              Uma identidade para cada projeto.
             </strong>
-            <p>A fundação para transformar leads em novas possibilidades.</p>
+            <p>Quatro nichos. Dois pontos de partida para cada negócio.</p>
             <Link href="/templates" onClick={() => setOpen(false)}>
               Explore os templates <ArrowUpRight size={15} />
             </Link>
@@ -155,7 +154,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <span className="avatar">LT</span>
             <div>
               <strong>Loung Tech</strong>
-              <small>Workspace demonstrativo</small>
+              <small>Workspace administrativo</small>
             </div>
             <span className="profile-dot" />
           </div>
@@ -168,6 +167,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               className="mobile-menu icon-button"
               aria-label="Abrir menu"
               aria-expanded={open}
+              aria-controls="studio-navigation"
               onClick={() => setOpen(!open)}
             >
               <Menu size={22} />
@@ -179,10 +179,12 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <div className="header-right">
             <span className="demo-pill">
               <span />
-              Modo demonstração
+              Ambiente privado
             </span>
             <span className="header-divider" />
-            <span className="mini-avatar">LT</span>
+            <span className="mini-avatar" aria-label="Loung Tech">
+              <StudioBrand compact />
+            </span>
           </div>
         </header>
         <main id="main" tabIndex={-1}>
@@ -214,17 +216,17 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               <X />
             </button>
             <FlaskConical size={28} />
-            <h2>Um primeiro olhar para o Studio</h2>
+            <h2>Seu espaço de criação.</h2>
             <p>
-              Esta é a Fase 2.1. Empresas, importações e publicações são
-              exemplos fictícios. A busca e os filtros já funcionam; geração,
-              edição, publicação e processamento de planilhas chegam nas
-              próximas fases.
+              Importe e revise leads, selecione empresas e gere protótipos
+              personalizados em rascunho. Dashboard, histórico e gerenciamento
+              consultam dados reais.
             </p>
             <p>
               O acesso utiliza Supabase Auth e autorização administrativa. O
-              painel continua demonstrativo; importação e geração reais ainda
-              não estão disponíveis.
+              processamento da planilha acontece no navegador. Os protótipos são
+              registros privados. Os oito templates possuem prévia desktop e
+              mobile. Revise os dados e confirme a publicação para criar um link público.
             </p>
             <button className="button primary" onClick={() => setHelp(false)}>
               Entendi

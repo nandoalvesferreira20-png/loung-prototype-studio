@@ -14,27 +14,30 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import { PageHeading, DemoNote } from "@/components/ui";
-import { PrototypeTable } from "@/components/prototypes/prototype-table";
-import { demoLeads, demoPrototypes } from "@/data/demo";
+import { PageHeading } from "@/components/ui";
+import { getDashboardData, listPersistedImports } from "@/services/database";
+import { ImportHistory } from "@/components/imports/import-history";
+import { formatDate } from "@/lib/prototypes";
 import { niches } from "@/config/catalog";
 export default async function Dashboard() {
   await requireAdminPage();
-  const published = demoPrototypes.filter(
-    (p) => p.status === "publicado",
-  ).length;
-  const drafts = demoPrototypes.filter((p) => p.status === "rascunho").length;
-  const review = demoPrototypes.length - published - drafts;
+  const [data, imports] = await Promise.all([
+    getDashboardData(),
+    listPersistedImports(),
+  ]);
+  const { published, drafts, review } = data;
+  const percent = (count: number, total: number) =>
+    total ? Math.round((count / total) * 100) : 0;
   const metrics = [
     {
-      label: "Leads importados",
-      value: demoLeads.length,
+      label: "Leads cadastrados",
+      value: data.leads,
       icon: Users,
       detail: "Empresas no workspace",
     },
     {
       label: "Protótipos gerados",
-      value: demoPrototypes.length,
+      value: data.prototypes,
       icon: Layers3,
       detail: "Uma ideia para cada empresa",
     },
@@ -42,7 +45,7 @@ export default async function Dashboard() {
       label: "Protótipos publicados",
       value: published,
       icon: Globe2,
-      detail: "Publicações ilustrativas",
+      detail: "Publicações no banco",
     },
     {
       label: "Em rascunho",
@@ -64,8 +67,11 @@ export default async function Dashboard() {
           </Link>
         }
       />
-      <DemoNote />
-      <section className="metrics-grid" aria-label="Indicadores demonstrativos">
+      <p className="import-notice">
+        {data.imports} importação(ões) · Última importação concluída:{" "}
+        {data.latestImport ? formatDate(data.latestImport) : "Nenhuma"}
+      </p>
+      <section className="metrics-grid" aria-label="Indicadores do banco">
         {metrics.map(({ label, value, icon: Icon, detail }) => (
           <article className="metric" key={label}>
             <div className="metric-top">
@@ -89,7 +95,7 @@ export default async function Dashboard() {
           <h2>
             Seu próximo projeto
             <br />
-            começa com uma possibilidade.
+            começa com <em>uma possibilidade.</em>
           </h2>
           <p>
             Quatro nichos. Oito pontos de partida. Um Studio para criar
@@ -140,34 +146,29 @@ export default async function Dashboard() {
         <div className="section-heading">
           <div>
             <h2>
-              Protótipos recentes{" "}
-              <span className="count">{demoPrototypes.length}</span>
+              Importações recentes <span className="count">{data.imports}</span>
             </h2>
-            <p>Os últimos projetos do seu workspace demonstrativo.</p>
+            <p>Os últimos lotes processados no Studio.</p>
           </div>
-          <Link className="text-link" href="/prototipos">
+          <Link className="text-link" href="/importacoes">
             Ver todos
             <ArrowRight size={16} />
           </Link>
         </div>
-        <PrototypeTable items={demoPrototypes.slice(0, 4)} compact />
+        <ImportHistory items={imports.slice(0, 5)} />
       </section>
       <div className="dashboard-bottom">
         <section className="panel niche-panel">
           <div className="section-heading">
             <div>
               <h2>Distribuição por nicho</h2>
-              <p>O universo dos seus protótipos.</p>
+              <p>O universo dos seus leads cadastrados.</p>
             </div>
-            <span className="muted small">
-              {demoPrototypes.length} no total
-            </span>
+            <span className="muted small">{data.leads} no total</span>
           </div>
           <div className="distribution">
             {niches.map((n, i) => {
-              const count = demoPrototypes.filter(
-                (p) => demoLeads.find((l) => l.id === p.leadId)?.nicho === n.id,
-              ).length;
+              const count = data.distribution[i];
               return (
                 <div className="distribution-row" key={n.id}>
                   <span className={`legend-dot legend-${i}`} />
@@ -176,12 +177,12 @@ export default async function Dashboard() {
                     <div
                       className={`progress-fill legend-${i}`}
                       style={{
-                        width: `${(count / demoPrototypes.length) * 100}%`,
+                        width: `${percent(count, data.leads)}%`,
                       }}
                     />
                   </div>
                   <b>{count}</b>
-                  <small>{(count / demoPrototypes.length) * 100}%</small>
+                  <small>{percent(count, data.leads)}%</small>
                 </div>
               );
             })}
@@ -198,11 +199,11 @@ export default async function Dashboard() {
             <div
               className="donut"
               style={{
-                background: `conic-gradient(var(--lime) 0 ${(published / 8) * 100}%,#252525 ${(published / 8) * 100}% ${((published + review) / 8) * 100}%,#e9e9e5 ${((published + review) / 8) * 100}% 100%)`,
+                background: `conic-gradient(var(--lime) 0 ${percent(published, data.prototypes)}%,var(--lt-black) ${percent(published, data.prototypes)}% ${percent(published + review, data.prototypes)}%,var(--lt-border) ${percent(published + review, data.prototypes)}% 100%)`,
               }}
             >
               <div>
-                <strong>08</strong>
+                <strong>{data.prototypes}</strong>
                 <small>protótipos</small>
               </div>
             </div>

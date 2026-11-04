@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { brandPalette } from "@/config/brand";
 import {
   Blocks,
   Check,
@@ -55,7 +56,7 @@ export function SettingsPanel() {
             <Blocks size={20} />
             <div>
               <h2>Preferências de geração</h2>
-              <p>Regras previstas para o futuro motor de protótipos.</p>
+              <p>Regras do Studio e uma simulação visual de preferência.</p>
             </div>
           </div>
           <div className="setting-row">
@@ -75,7 +76,8 @@ export function SettingsPanel() {
             <div>
               <strong>Distribuição equilibrada entre A e B</strong>
               <p>
-                Preferência ilustrativa. Não altera o catálogo ou os exemplos.
+                Simulação visual local. Este controle não altera o motor de
+                geração.
               </p>
             </div>
             <button
@@ -89,7 +91,7 @@ export function SettingsPanel() {
             </button>
           </div>
           <p className="field-hint">
-            A troca manual de template será disponibilizada em uma fase futura.
+            A geração e a troca de templates estão disponíveis em Protótipos.
           </p>
         </section>
         <section className="panel settings-section">
@@ -122,12 +124,7 @@ export function SettingsPanel() {
             </div>
           </div>
           <div className="color-tokens">
-            {[
-              { name: "Preto", color: "#101010" },
-              { name: "Branco", color: "#FFFFFF" },
-              { name: "Verde-lima", color: "#A4FF39" },
-              { name: "Fundo", color: "#F7F7F5" },
-            ].map((token) => (
+            {brandPalette.map((token) => (
               <div key={token.name}>
                 <span style={{ background: token.color }} />
                 <strong>{token.name}</strong>
@@ -136,7 +133,7 @@ export function SettingsPanel() {
             ))}
           </div>
           <p className="field-hint">
-            Os templates dos clientes terão identidade própria, independente
+            Os templates dos clientes mantêm identidade própria, independente
             deste painel.
           </p>
         </section>
@@ -148,8 +145,8 @@ export function SettingsPanel() {
         <p className="eyebrow">CONECTAR PARA EVOLUIR</p>
         <h2>Integrações</h2>
         <p>
-          Autenticação integrada. As demais funcionalidades evoluirão nas
-          próximas fases.
+          Serviços e canais utilizados pelo Studio, sem exposição de
+          credenciais.
         </p>
         {[
           { name: "Supabase", description: "Banco de dados e autenticação" },
@@ -175,8 +172,9 @@ export function SettingsPanel() {
         <div className="future-note">
           <LockKeyhole size={17} />
           <p>
-            Supabase Auth protege o acesso. Dados das telas e preferências
-            continuam demonstrativos.
+            Supabase Auth protege o acesso. Leads e protótipos usam dados
+            persistidos. As preferências desta tela são simulações locais, sem
+            gravação.
           </p>
         </div>
       </aside>

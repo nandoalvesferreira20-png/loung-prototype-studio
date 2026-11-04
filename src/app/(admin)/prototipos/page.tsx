@@ -1,10 +1,26 @@
 import { requireAdminPage } from "@/lib/auth/server";
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { DemoNote, PageHeading } from "@/components/ui";
+import { PageHeading } from "@/components/ui";
 import { PrototypeList } from "@/components/prototypes/prototype-list";
+import { GenerationPanel } from "@/components/prototypes/generation-panel";
+import { generationLeadsAction, prototypeListAction } from "./actions";
+import { listPersistedTemplates } from "@/services/database";
+export const maxDuration = 30;
 export default async function PrototypesPage() {
   await requireAdminPage();
+  const [leads, prototypes, templates] = await Promise.all([
+    generationLeadsAction({ query: "", niche: "", page: 0 }),
+    prototypeListAction({
+      query: "",
+      niche: "",
+      status: "",
+      templateId: "",
+      page: 0,
+    }),
+    listPersistedTemplates(),
+  ]);
+  const items = prototypes.ok ? prototypes.data : { items: [], total: 0 };
   return (
     <>
       <PageHeading
@@ -18,11 +34,19 @@ export default async function PrototypesPage() {
           </Link>
         }
       />
-      <DemoNote />
-      <PrototypeList />
+      <GenerationPanel
+        initial={leads.ok ? leads.data : { items: [], total: 0, eligible: 0 }}
+        error={leads.ok ? undefined : leads.message}
+      />
+      <PrototypeList
+        key={`${items.total}:${items.items.map((i) => `${i.id}:${i.revision}:${i.publication?.publication_version ?? 0}`).join(",")}`}
+        initial={items}
+        templates={templates}
+        error={prototypes.ok ? undefined : prototypes.message}
+      />
       <p className="page-footnote">
-        Um protótipo por lead. A troca manual de template será disponibilizada
-        junto ao motor de geração.
+        Um protótipo por lead. Dados privados, com revisão administrativa e sem
+        publicação automática.
       </p>
     </>
   );

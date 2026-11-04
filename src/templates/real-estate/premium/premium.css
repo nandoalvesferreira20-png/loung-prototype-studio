@@ -1,0 +1,1109 @@
+.estatePremium {
+  background: var(--re-paper);
+  color: var(--re-text);
+  font:
+    16px/1.5 Arial,
+    Helvetica,
+    sans-serif;
+  min-height: 100dvh;
+  overflow-wrap: anywhere;
+}
+.estatePremium * {
+  box-sizing: border-box;
+}
+.estatePremium h1,
+.estatePremium h2,
+.estatePremium h3,
+.estatePremium p,
+.estatePremium figure {
+  margin: 0;
+}
+.estatePremium h1,
+.estatePremium h2,
+.estatePremium h3 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+.estatePremium.reFont-traditional h1,
+.estatePremium.reFont-traditional h2,
+.estatePremium.reFont-traditional h3 {
+  font-family: "Times New Roman", serif;
+}
+.estatePremium h2 {
+  font-size: clamp(29px, 3.2vw, 43px);
+}
+.estatePremium p {
+  line-height: 1.45;
+}
+.estatePremium a {
+  color: inherit;
+  text-decoration: none;
+}
+.estatePremium button,
+.estatePremium input,
+.estatePremium select {
+  font: inherit;
+}
+.estatePremium button,
+.estatePremium a,
+.estatePremium select {
+  touch-action: manipulation;
+}
+.estatePremium a:focus-visible,
+.estatePremium button:focus-visible,
+.estatePremium input:focus-visible,
+.estatePremium select:focus-visible {
+  outline: 3px solid var(--re-accent);
+  outline-offset: 4px;
+}
+.estatePremium svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  stroke-width: 1.5;
+}
+.estatePremium .reContainer {
+  width: min(1240px, 89%);
+  margin-inline: auto;
+}
+.estatePremium i {
+  display: block;
+  width: 65px;
+  height: 2px;
+  background: var(--re-accent);
+  margin: 14px 0;
+}
+.estatePremium .reButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 22px;
+  background: var(--re-olive);
+  border: 1px solid var(--re-olive);
+  border-radius: 5px;
+  color: var(--re-white);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+  text-align: center;
+  min-height: 44px;
+}
+.estatePremium .reButton:hover {
+  filter: brightness(1.1);
+}
+.estatePremium .reOutline {
+  background: transparent;
+  border-color: var(--re-white);
+}
+.estatePremium .reHeader {
+  background: var(--re-primary);
+  color: var(--re-white);
+  position: relative;
+  z-index: 10;
+}
+.estatePremium .reHeader > .reContainer {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  justify-content: space-between;
+}
+.estatePremium .reBrand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 360px;
+}
+.estatePremium .reBrand > svg {
+  width: 47px;
+  height: 47px;
+  stroke: var(--re-accent);
+}
+.estatePremium .reBrand strong {
+  display: block;
+  font:
+    26px/1.05 Georgia,
+    serif;
+  letter-spacing: 0.02em;
+}
+.estatePremium .reBrand small {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  margin-top: 3px;
+}
+.estatePremium .reBrand img {
+  object-fit: contain;
+  max-width: 58px;
+}
+.estatePremium .reMonogram {
+  font:
+    36px Georgia,
+    serif;
+  color: var(--re-accent);
+}
+.estatePremium .reHeader .reButton {
+  background: var(--re-accent);
+  border-color: var(--re-accent);
+  color: var(--re-primary);
+  white-space: normal;
+  max-width: 220px;
+}
+.estatePremium .menuToggle {
+  display: none;
+}
+.estatePremium .menuLinks {
+  display: flex;
+  gap: 30px;
+  font-size: 14px;
+}
+.estatePremium .menuLinks a {
+  padding-block: 25px;
+  border-bottom: 2px solid transparent;
+}
+.estatePremium .menuLinks a:hover {
+  border-color: var(--re-accent);
+}
+.estatePremium .rePhoto {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--re-beige);
+  height: 100%;
+  min-height: 200px;
+}
+.estatePremium .rePhoto img {
+  object-fit: cover;
+}
+.estatePremium .rePhoto figcaption {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: white;
+  background: #142b35c9;
+  padding: 2px 7px;
+  z-index: 2;
+  border-radius: 2px;
+}
+.estatePremium .rePhotoFallback {
+  height: 100%;
+  min-height: 200px;
+  display: grid;
+  place-items: center;
+  color: var(--re-primary);
+  padding: 24px;
+  text-align: center;
+}
+.estatePremium .reHero {
+  height: 510px;
+  position: relative;
+  color: var(--re-white);
+}
+.estatePremium .reHero > .rePhoto {
+  position: absolute;
+  inset: 0;
+}
+.estatePremium .reHero:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(4, 12, 10, 0.86),
+    rgba(4, 12, 10, 0.48) 40%,
+    transparent 77%
+  );
+  pointer-events: none;
+}
+.estatePremium .reHero > .reContainer {
+  position: relative;
+  height: 100%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding-bottom: 25px;
+  pointer-events: none;
+}
+.estatePremium .reHeroCopy {
+  width: 550px;
+  max-width: 54%;
+  pointer-events: auto;
+}
+.estatePremium .reHero h1 {
+  font-size: clamp(38px, 4.3vw, 62px);
+  max-width: 540px;
+  text-wrap: balance;
+}
+.estatePremium .reHeroCopy > p {
+  font-size: 17px;
+  max-width: 450px;
+  margin: 20px 0 24px;
+}
+.estatePremium .reHeroCopy > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.estatePremium .reHero i {
+  margin: 0 0 20px;
+}
+.estatePremium .reSearch {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr 1fr auto;
+  gap: 20px;
+  position: relative;
+  z-index: 3;
+  margin-top: -40px;
+  padding: 20px 24px;
+  border: 1px solid var(--re-beige);
+  box-shadow: 0 8px 22px #142b3522;
+  background: var(--re-paper);
+  border-radius: 9px;
+  align-items: end;
+}
+.estatePremium .reSearch label {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 0;
+}
+.estatePremium .reSearch input,
+.estatePremium .reSearch select {
+  display: block;
+  background: var(--re-white);
+  border: 1px solid var(--re-beige);
+  width: 100%;
+  min-width: 0;
+  border-radius: 4px;
+  height: 40px;
+  margin-top: 7px;
+  padding: 7px;
+  color: var(--re-text);
+  font-size: 13px;
+}
+.estatePremium .reSearch .reButton {
+  height: 42px;
+  padding-inline: 16px;
+}
+.estatePremium .reCatalog {
+  padding-block: 34px;
+}
+.estatePremium .reCentered {
+  text-align: center;
+}
+.estatePremium .reCentered p {
+  margin-top: 12px;
+}
+.estatePremium .reCentered i {
+  margin: 15px auto;
+}
+.estatePremium .reResult {
+  font-size: 12px;
+  color: var(--re-olive);
+  margin: 10px 0 14px;
+}
+.estatePremium .rePropertyGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.estatePremium .reProperty {
+  border: 1px solid var(--re-beige);
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--re-white);
+}
+.estatePremium .rePropertyVisual {
+  position: relative;
+  height: 230px;
+}
+.estatePremium .reBadge,
+.estatePremium .reFeatured {
+  position: absolute;
+  top: 13px;
+  left: 15px;
+  background: var(--re-olive);
+  color: var(--re-white);
+  font-size: 12px;
+  padding: 4px 14px;
+  border-radius: 5px;
+}
+.estatePremium .reFeatured {
+  left: auto;
+  right: 12px;
+  background: var(--re-primary);
+}
+.estatePremium .rePropertyBody {
+  padding: 16px 18px;
+}
+.estatePremium .reProperty h3 {
+  font-size: 25px;
+}
+.estatePremium .reLocation {
+  display: flex;
+  gap: 7px;
+  margin-top: 8px;
+  font-size: 12px;
+}
+.estatePremium .reLocation svg {
+  width: 15px;
+  height: 17px;
+}
+.estatePremium .reDemo {
+  display: block;
+  font:
+    600 12px/1.4 Arial,
+    sans-serif;
+  color: var(--re-primary);
+  background: var(--re-beige);
+  padding: 7px 10px;
+  margin-top: 8px;
+}
+.estatePremium .reStatus {
+  text-transform: capitalize;
+  font-size: 12px;
+  margin-top: 8px;
+}
+.estatePremium .reFeatures {
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  margin: 17px 0;
+}
+.estatePremium .reFeatures > span {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.estatePremium .reFeatures svg {
+  width: 18px;
+  height: 18px;
+  color: var(--re-olive);
+}
+.estatePremium .rePropertyBottom {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--re-beige);
+  padding-top: 13px;
+  flex-wrap: wrap;
+}
+.estatePremium .rePropertyBottom strong {
+  font-size: 19px;
+  font-weight: 600;
+}
+.estatePremium .rePropertyBottom button {
+  border: 0;
+  background: none;
+  color: var(--re-olive);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  min-height: 36px;
+  padding: 0;
+}
+.estatePremium .reEmpty {
+  padding: 35px;
+  background: var(--re-beige);
+  border-radius: 7px;
+  text-align: center;
+}
+.estatePremium .reEmpty h3 {
+  font-size: 31px;
+}
+.estatePremium .reEmpty p {
+  margin: 14px 0 22px;
+}
+.estatePremium .reEmptySplit {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: center;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+  margin-top: 25px;
+}
+.estatePremium .reEmptySplit > .rePhoto {
+  min-height: 280px;
+}
+.estatePremium .reEmptySplit > div {
+  padding: 25px 35px 25px 0;
+}
+.estatePremium .reEyebrow {
+  text-transform: uppercase;
+  color: var(--re-olive);
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 12px;
+}
+.estatePremium .reAbout {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-block: 24px 35px;
+}
+.estatePremium .reAbout > .rePhoto {
+  min-height: 310px;
+}
+.estatePremium .reAbout p {
+  margin: 17px 0;
+  font-size: 15px;
+}
+.estatePremium .reCategories {
+  padding-bottom: 35px;
+}
+.estatePremium .reCategories header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 22px;
+}
+.estatePremium .reCategories h2 {
+  font-size: 33px;
+}
+.estatePremium .reCategories header p {
+  font-size: 14px;
+}
+.estatePremium .reCategories > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+.estatePremium .reCategories a {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.estatePremium .reCategories a:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, #000b);
+}
+.estatePremium .reCategories a > span {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  right: 15px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font:
+    25px Georgia,
+    serif;
+}
+.estatePremium .reCategories figcaption {
+  top: 6px;
+  bottom: auto;
+}
+.estatePremium .reSteps {
+  background: var(--re-beige);
+  padding: 30px 0;
+}
+.estatePremium .reSteps > .reContainer {
+  display: grid;
+  grid-template-columns: 1.35fr repeat(3, 1fr);
+  gap: 30px;
+  align-items: center;
+}
+.estatePremium .reSteps h2 {
+  font-size: 33px;
+}
+.estatePremium .reSteps .reContainer > div + div {
+  border-left: 1px solid color-mix(in srgb, var(--re-accent) 50%, transparent);
+  padding-left: 25px;
+}
+.estatePremium .reSteps span {
+  font:
+    28px Georgia,
+    serif;
+  color: var(--re-olive);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.estatePremium .reSteps span svg {
+  height: 30px;
+  width: 30px;
+  stroke: var(--re-olive);
+}
+.estatePremium .reSteps h3 {
+  font:
+    600 15px/1.3 Arial,
+    sans-serif;
+  letter-spacing: 0;
+  margin-bottom: 6px;
+}
+.estatePremium .reSteps p {
+  font-size: 13px;
+}
+.estatePremium .reServices {
+  padding-block: 35px;
+}
+.estatePremium .reServices ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 30px;
+  margin: 22px 0 0;
+  padding-left: 20px;
+}
+.estatePremium .reEditorial {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: stretch;
+  gap: 45px;
+}
+.estatePremium .reEditorial > .rePhoto {
+  min-height: 290px;
+}
+.estatePremium .reEditorial > div {
+  padding: 30px 10% 30px 0;
+  align-self: center;
+}
+.estatePremium .reEditorial p {
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.estatePremium .reConversion {
+  background: var(--re-primary);
+  color: var(--re-white);
+  padding: 25px 0;
+}
+.estatePremium .reConversion > .reContainer {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: space-between;
+}
+.estatePremium .reConversion h2 {
+  font-size: 31px;
+}
+.estatePremium .reConversion p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+.estatePremium .reConversion .reButton {
+  border-color: var(--re-accent);
+  flex-shrink: 0;
+}
+.estatePremium .reContact {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 35px;
+  align-items: center;
+  padding-block: 25px;
+}
+.estatePremium .reContact h2 {
+  font-size: 32px;
+}
+.estatePremium .reContact p {
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.estatePremium .reContact address {
+  font-style: normal;
+  font-size: 13px;
+  border-left: 1px solid var(--re-beige);
+  padding-left: 30px;
+  display: grid;
+  gap: 14px;
+}
+.estatePremium .reContact address a {
+  display: flex;
+  gap: 14px;
+  align-items: start;
+}
+.estatePremium .reContact address svg {
+  color: var(--re-olive);
+}
+.estatePremium .reContact address b {
+  display: block;
+}
+.estatePremium .reContact > .rePhoto {
+  min-height: 240px;
+}
+.estatePremium .reFooter {
+  background: var(--re-primary);
+  color: var(--re-white);
+  padding: 25px 0 12px;
+  font-size: 12px;
+}
+.estatePremium .reFooterGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 0.9fr 1fr;
+  gap: 40px;
+}
+.estatePremium .reFooterGrid > div:first-child {
+  border-right: 1px solid var(--re-accent);
+  padding-right: 30px;
+}
+.estatePremium .reFooterGrid p {
+  margin-top: 12px;
+}
+.estatePremium .reFooterGrid h3 {
+  font:
+    600 13px Arial,
+    sans-serif;
+  letter-spacing: 0;
+  margin-bottom: 12px;
+}
+.estatePremium .reFooterGrid > div > a {
+  display: block;
+  margin-top: 4px;
+}
+.estatePremium .reFooter .reBrand {
+  display: flex;
+}
+.estatePremium .reFooter .reBrand strong {
+  font-size: 24px;
+}
+.estatePremium .reFooter .reBrand svg {
+  width: 39px;
+  height: 39px;
+}
+.estatePremium .reFooter .reBrand small {
+  font-size: 10px;
+}
+.estatePremium .reSocials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+}
+.estatePremium .reCredit {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--re-accent);
+  margin-top: 20px;
+  padding-top: 12px;
+  font-size: 11px;
+}
+.estatePremium .reDialog {
+  width: min(900px, 94vw);
+  max-height: 90dvh;
+  border: 0;
+  padding: 0;
+  background: var(--re-paper);
+  color: var(--re-text);
+  border-radius: 8px;
+  overflow-y: auto;
+}
+.estatePremium .reDialog::backdrop {
+  background: #07131cc9;
+}
+.estatePremium .reClose {
+  position: sticky;
+  top: 10px;
+  float: right;
+  z-index: 5;
+  margin: 10px;
+  border: 1px solid var(--re-beige);
+  border-radius: 4px;
+  background: var(--re-white);
+  color: var(--re-primary);
+  padding: 10px 18px;
+  cursor: pointer;
+}
+.estatePremium .reGallery {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0 20px;
+}
+.estatePremium .reGallery .rePhoto {
+  height: 260px;
+}
+.estatePremium .reGallery .rePhoto:first-child {
+  grid-column: 1/-1;
+  height: 380px;
+}
+.estatePremium .reDialogContent {
+  padding: 25px 30px;
+}
+.estatePremium .reDialogContent h2 {
+  margin: 15px 0;
+  font-size: 36px;
+}
+.estatePremium .reDialogContent h3 {
+  font-size: 28px;
+}
+.estatePremium .reDialogContent > p {
+  margin: 14px 0;
+  white-space: pre-line;
+}
+.estatePremium .reDialogContent .reButton {
+  margin-top: 15px;
+}
+@media (min-width: 1600px) {
+  .estatePremium .reHero {
+    height: 620px;
+  }
+}
+@media (max-width: 1100px) {
+  .estatePremium .reHeader > .reContainer {
+    gap: 20px;
+  }
+  .estatePremium .menuLinks {
+    gap: 18px;
+  }
+  .estatePremium .reBrand strong {
+    font-size: 23px;
+  }
+  .estatePremium .reSearch {
+    gap: 12px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .estatePremium .reSearch button {
+    grid-column: 1/-1;
+    justify-self: end;
+  }
+  .estatePremium .rePropertyVisual {
+    height: 190px;
+  }
+  .estatePremium .reSteps > .reContainer {
+    gap: 20px;
+  }
+  .estatePremium .reSteps h2 {
+    font-size: 29px;
+  }
+  .estatePremium .reContact {
+    gap: 22px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .estatePremium .reContact > .rePhoto {
+    grid-column: 1/-1;
+    height: 270px;
+  }
+  .estatePremium .reFooterGrid {
+    gap: 25px;
+  }
+}
+@media (max-width: 800px) {
+  .estatePremium .reHeader > .reContainer {
+    min-height: 75px;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-block: 12px;
+  }
+  .estatePremium .reHeader nav {
+    margin-left: auto;
+  }
+  .estatePremium .reHeader > .reContainer > .reButton {
+    display: none;
+  }
+  .estatePremium .menuToggle {
+    display: block;
+    border: 1px solid var(--re-accent);
+    background: transparent;
+    color: var(--re-white);
+    border-radius: 4px;
+    padding: 10px 14px;
+    min-height: 44px;
+  }
+  .estatePremium .menuLinks {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--re-primary);
+    padding: 16px 5.5%;
+    border-top: 1px solid var(--re-accent);
+  }
+  .estatePremium .menuLinks[data-open="true"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .estatePremium .menuLinks a {
+    padding: 12px;
+  }
+  .estatePremium .reHeroCopy {
+    max-width: 70%;
+  }
+  .estatePremium .reHero {
+    height: 510px;
+  }
+  .estatePremium .reHero h1 {
+    font-size: 46px;
+  }
+  .estatePremium .reHero:after {
+    background: linear-gradient(90deg, #04100de8, #04100d88 65%, #04100d22);
+  }
+  .estatePremium .reSearch {
+    grid-template-columns: 1fr 1fr;
+    margin-top: -25px;
+  }
+  .estatePremium .reSearch button {
+    justify-self: stretch;
+  }
+  .estatePremium .rePropertyGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .estatePremium .reAbout {
+    gap: 25px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .estatePremium .reAbout > .rePhoto {
+    min-height: 350px;
+  }
+  .estatePremium .reCategories header {
+    align-items: start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .estatePremium .reSteps > .reContainer {
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+  .estatePremium .reSteps .reContainer > div + div {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .estatePremium .reEditorial {
+    gap: 25px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .estatePremium .reEditorial > div {
+    padding-right: 10%;
+  }
+  .estatePremium .reConversion > .reContainer {
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .estatePremium .reFooterGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .estatePremium .reEmptySplit {
+    gap: 20px;
+  }
+  .estatePremium .reEmptySplit > div {
+    padding: 25px 20px 25px 0;
+  }
+  .estatePremium .reEmptySplit h3 {
+    font-size: 28px;
+  }
+}
+@media (max-width: 540px) {
+  .estatePremium .reContainer {
+    width: 89%;
+  }
+  .estatePremium .reBrand {
+    max-width: 245px;
+    gap: 8px;
+  }
+  .estatePremium .reBrand strong {
+    font-size: 22px;
+  }
+  .estatePremium .reBrand > svg {
+    width: 34px;
+    height: 40px;
+  }
+  .estatePremium .reBrand small {
+    font-size: 10px;
+  }
+  .estatePremium .reHeader > .reContainer {
+    gap: 8px;
+  }
+  .estatePremium .menuToggle {
+    padding: 10px;
+  }
+  .estatePremium .reHero {
+    height: 570px;
+  }
+  .estatePremium .reHeroCopy {
+    max-width: 100%;
+    width: 100%;
+  }
+  .estatePremium .reHero h1 {
+    font-size: 43px;
+    max-width: 370px;
+  }
+  .estatePremium .reHeroCopy > p {
+    font-size: 15px;
+    max-width: 320px;
+  }
+  .estatePremium .reHeroCopy > div {
+    gap: 10px;
+  }
+  .estatePremium .reHero .reButton {
+    font-size: 12px;
+    padding-inline: 14px;
+  }
+  .estatePremium .reHero:after {
+    background: linear-gradient(90deg, #04100deb, #04100d99);
+  }
+  .estatePremium .reHero > .rePhoto img {
+    object-position: 62% center !important;
+  }
+  .estatePremium .reSearch {
+    padding: 18px 15px;
+    gap: 14px 10px;
+    border-radius: 7px;
+  }
+  .estatePremium .reSearch input,
+  .estatePremium .reSearch select {
+    font-size: 14px;
+    min-height: 44px;
+  }
+  .estatePremium .rePropertyGrid {
+    grid-template-columns: 1fr;
+  }
+  .estatePremium .rePropertyVisual {
+    height: 235px;
+  }
+  .estatePremium .reProperty h3 {
+    font-size: 27px;
+  }
+  .estatePremium .reCentered h2 {
+    font-size: 32px;
+  }
+  .estatePremium .reCentered p {
+    font-size: 14px;
+  }
+  .estatePremium .reAbout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    margin-block: 20px 35px;
+  }
+  .estatePremium .reAbout > .rePhoto {
+    height: 250px;
+    min-height: 250px;
+  }
+  .estatePremium .reAbout h2 {
+    font-size: 35px;
+  }
+  .estatePremium .reCategories > div {
+    grid-template-columns: 1fr;
+  }
+  .estatePremium .reCategories a {
+    height: 200px;
+  }
+  .estatePremium .reSteps > .reContainer {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .estatePremium .reSteps h2 {
+    font-size: 34px;
+    max-width: 300px;
+  }
+  .estatePremium .reSteps .reContainer > div + div {
+    border-top: 1px solid var(--re-accent);
+    padding-top: 20px;
+  }
+  .estatePremium .reSteps span {
+    font-size: 25px;
+  }
+  .estatePremium .reSteps .reContainer > div {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 0 14px;
+  }
+  .estatePremium .reSteps span {
+    grid-row: 1/3;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: start;
+  }
+  .estatePremium .reSteps h3,
+  .estatePremium .reSteps p {
+    grid-column: 2;
+  }
+  .estatePremium .reEditorial {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .estatePremium .reEditorial > .rePhoto {
+    height: 250px;
+    min-height: 250px;
+  }
+  .estatePremium .reEditorial > div {
+    padding: 28px 5.5%;
+  }
+  .estatePremium .reEditorial h2 {
+    font-size: 36px;
+  }
+  .estatePremium .reConversion h2 {
+    font-size: 30px;
+  }
+  .estatePremium .reContact {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding-block: 30px;
+  }
+  .estatePremium .reContact address {
+    border-left: 0;
+    padding-left: 0;
+    gap: 16px;
+  }
+  .estatePremium .reContact > .rePhoto {
+    height: 230px;
+    min-height: 230px;
+  }
+  .estatePremium .reFooterGrid {
+    gap: 26px 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .estatePremium .reFooterGrid > div:first-child {
+    grid-column: 1/-1;
+    border-right: 0;
+    padding-right: 0;
+    border-bottom: 1px solid var(--re-accent);
+    padding-bottom: 20px;
+  }
+  .estatePremium .reCredit {
+    flex-direction: column;
+    gap: 9px;
+  }
+  .estatePremium .reGallery {
+    grid-template-columns: 1fr;
+    padding: 0 12px;
+  }
+  .estatePremium .reGallery .rePhoto,
+  .estatePremium .reGallery .rePhoto:first-child {
+    height: 230px;
+  }
+  .estatePremium .reDialogContent {
+    padding: 20px;
+  }
+  .estatePremium .reDialogContent h2 {
+    font-size: 30px;
+  }
+  .estatePremium .reEmptySplit {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .estatePremium .reEmptySplit > .rePhoto {
+    height: 210px;
+    min-height: 210px;
+  }
+  .estatePremium .reEmptySplit > div {
+    padding: 24px;
+  }
+  .estatePremium .reEmptySplit h3 {
+    font-size: 30px;
+  }
+}

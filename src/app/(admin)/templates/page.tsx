@@ -8,7 +8,7 @@ export default async function TemplatesPage() {
       <PageHeading
         eyebrow="O PONTO DE PARTIDA CERTO"
         title="Biblioteca de templates."
-        description="Oito conceitos visuais. Quatro universos de negócio. Explore o que vem por aí."
+        description="Oito pontos de partida com identidade própria. Escolha um nicho e explore as variantes disponíveis para prévia privada."
       />
       <div className="catalog-summary">
         <span>
@@ -20,7 +20,7 @@ export default async function TemplatesPage() {
         <span>
           <b>A + B</b> duas variantes por nicho
         </span>
-        <span className="planned-pill">Em planejamento</span>
+        <span className="planned-pill">Oito templates disponíveis</span>
       </div>
       <TemplateLibrary />
     </>

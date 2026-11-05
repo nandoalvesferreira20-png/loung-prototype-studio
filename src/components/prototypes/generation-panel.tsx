@@ -460,6 +460,18 @@ export function GenerationPanel({
             {result.created} rascunho(s) criado(s) · {result.ignored} lead(s) já
             possuíam protótipo. Nenhuma publicação foi realizada.
           </p>
+          {result.prototypes.length > 0 && (
+            <a
+              className="button primary"
+              href={`/publicacoes?ids=${result.prototypes
+                .slice(-25)
+                .map((p) => p.id)
+                .join(",")}`}
+            >
+              Revisar para publicação
+              {result.prototypes.length > 25 ? " — últimos 25 criados" : ""}
+            </a>
+          )}
         </div>
       )}
     </section>

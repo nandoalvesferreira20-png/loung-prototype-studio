@@ -28,6 +28,7 @@ test(
       "/dashboard",
       "/importacoes",
       "/prototipos",
+      "/publicacoes",
       "/templates",
       "/configuracoes",
     ]) {

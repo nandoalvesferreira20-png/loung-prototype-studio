@@ -6,9 +6,25 @@ import { PrototypeList } from "@/components/prototypes/prototype-list";
 import { GenerationPanel } from "@/components/prototypes/generation-panel";
 import { generationLeadsAction, prototypeListAction } from "./actions";
 import { listPersistedTemplates } from "@/services/database";
+import { getPrivatePreview } from "@/services/preview";
 export const maxDuration = 30;
-export default async function PrototypesPage() {
+export default async function PrototypesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ edit?: string }>;
+}) {
   await requireAdminPage();
+  const edit = (await searchParams).edit;
+  const target = edit ? await getPrivatePreview(edit) : null;
+  const initialSelected = target
+    ? {
+        ...target.prototype,
+        company_name: "Empresa",
+        template_name: target.template.name,
+        variant: target.template.variant,
+        template_status: target.template.status,
+      }
+    : undefined;
   const [leads, prototypes, templates] = await Promise.all([
     generationLeadsAction({ query: "", niche: "", page: 0 }),
     prototypeListAction({
@@ -39,6 +55,7 @@ export default async function PrototypesPage() {
         error={leads.ok ? undefined : leads.message}
       />
       <PrototypeList
+        initialSelected={initialSelected}
         key={`${items.total}:${items.items.map((i) => `${i.id}:${i.revision}:${i.publication?.publication_version ?? 0}`).join(",")}`}
         initial={items}
         templates={templates}

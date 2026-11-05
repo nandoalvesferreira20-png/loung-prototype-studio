@@ -185,6 +185,7 @@ export type Database = {
     };
     Views: { [_ in never]: never };
     Functions: {
+      list_publication_center: { Args: { p_filters: Json }; Returns: Json };
       publish_prototype: {
         Args: {
           p_id: string;

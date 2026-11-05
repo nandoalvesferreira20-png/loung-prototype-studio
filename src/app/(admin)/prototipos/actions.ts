@@ -108,6 +108,7 @@ export async function editPrototypeAction(raw: unknown) {
   const result = await editPrototype(raw, port());
   if (result.ok) {
     revalidatePath("/prototipos");
+    revalidatePath("/publicacoes");
     revalidatePath("/dashboard");
   }
   return result;

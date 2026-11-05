@@ -94,11 +94,22 @@ export async function reviewPublication(id: string) {
         ],
       },
     };
-  } catch {
+  } catch (error) {
+    const safeMessages = [
+      "Protótipo indisponível.",
+      "Template indisponível.",
+      "Referência de imagem inválida.",
+      "Imagem não encontrada.",
+      "Publicação indisponível. Verifique a migration da fase 5.1.",
+    ];
     return {
       ok: false as const,
       error:
-        "Não foi possível revisar. Verifique autorização, dados, imagens e migration de publicação.",
+        error instanceof z.ZodError
+          ? "Conteúdo público inválido. Corrija os campos no editor e revise novamente."
+          : error instanceof Error && safeMessages.includes(error.message)
+            ? error.message
+            : "Não foi possível revisar. Verifique autorização, dados, imagens e migration de publicação.",
     };
   }
 }
@@ -132,6 +143,7 @@ export async function publishPrototype(raw: unknown) {
     if (error) throw error;
     revalidatePath(`/p/${reviewed.data.slug}`);
     revalidatePath("/prototipos");
+    revalidatePath("/publicacoes");
     return { ok: true as const };
   } catch {
     return {
@@ -160,6 +172,7 @@ export async function unpublishPrototype(id: string, version: number) {
     if (error) throw error;
     revalidatePath(`/p/${publication.slug}`);
     revalidatePath("/prototipos");
+    revalidatePath("/publicacoes");
     return { ok: true as const };
   } catch {
     return {

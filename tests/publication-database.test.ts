@@ -5,6 +5,11 @@ import { randomUUID } from "node:crypto";
 import { PGlite } from "@electric-sql/pglite";
 import { buildPersonalization } from "../src/lib/generation/personalize";
 import { publicSnapshot } from "../src/lib/publication";
+import {
+  initialCenterFilters,
+  type CenterFilters,
+  type CenterPage,
+} from "../src/lib/publication-center";
 import type {
   LeadRow,
   PrototypeRow,
@@ -90,6 +95,17 @@ test(
       );
       const first = (await publish(1, 0)).rows[0].v;
       assert.equal(first.publication_version, 1);
+      const center = async (filters: Partial<CenterFilters> = {}) =>
+        (
+          await db.query<{ v: CenterPage }>(
+            "select public.list_publication_center($1::jsonb) v",
+            [JSON.stringify({ ...initialCenterFilters, ...filters })],
+          )
+        ).rows[0].v;
+      assert.equal((await center({ state: "published" })).total, 1);
+      assert.equal((await center()).metrics.never, 0);
+      assert.equal("customization_data" in (await center()).items[0], false);
+      assert.equal("public_data" in (await center()).items[0], false);
       assert.equal(await filtered("published"), 1);
       assert.equal(await filtered("draft"), 0);
       assert.equal(first.slug, proto.slug);
@@ -113,6 +129,8 @@ test(
         snapshot,
       );
       await assert.rejects(publish(1, 1), /draft_changed/);
+      assert.equal((await center({ pending: "yes" })).total, 1);
+      assert.equal((await center()).metrics.pending, 1);
       const next = publicSnapshot(draft);
       const races = await Promise.allSettled([
         publish(2, 1, next),
@@ -123,6 +141,7 @@ test(
         `select set_config('request.jwt.claim.sub','${member}',false)`,
       );
       await assert.rejects(publish(2, 2, next), /admin_required/);
+      await assert.rejects(center(), /admin_required/);
       await assert.rejects(
         db.query("select public.unpublish_prototype($1,2)", [proto.id]),
         /admin_required/,
@@ -153,6 +172,7 @@ test(
         /permission denied/,
       );
       await assert.rejects(publish(2, 2, next), /permission denied/);
+      await assert.rejects(center(), /permission denied/);
       await assert.rejects(
         db.query("update public.published_prototypes set unpublished_at=now()"),
         /permission denied/,
@@ -161,6 +181,7 @@ test(
         `reset role;set role authenticated;select set_config('request.jwt.claim.sub','${admin}',false)`,
       );
       await db.query("select public.unpublish_prototype($1,2)", [proto.id]);
+      assert.equal((await center({ state: "unpublished" })).total, 1);
       assert.equal(await filtered("unpublished"), 1);
       assert.equal(await filtered("published"), 0);
       await db.exec(
@@ -183,6 +204,57 @@ test(
           .rows[0].status,
         "draft",
       );
+      const extra = (
+        await db.query<{ v: LeadRow }>(
+          "insert into public.leads(name,niche) select 'Lote Centro '||lpad(i::text,2,'0'),'clinicas' from generate_series(1,26) i returning to_jsonb(leads.*) v",
+        )
+      ).rows.map((r) => r.v);
+      for (const batch of [extra.slice(0, 25), extra.slice(25)]) {
+        const ids = batch.map((l) => l.id);
+        const plan = (
+          await db.query<{ v: GenerationPlan }>(
+            "select public.plan_prototype_generation($1,'auto') v",
+            [ids],
+          )
+        ).rows[0].v;
+        await db.query("select public.generate_prototypes($1::jsonb)", [
+          JSON.stringify({
+            requestId: randomUUID(),
+            leadIds: ids,
+            mode: "auto",
+            expectedPlan: plan.fingerprint,
+            customizations: batch.map((l) => ({
+              leadId: l.id,
+              data: buildPersonalization(l),
+            })),
+          }),
+        ]);
+      }
+      const one = await center({ query: "LOTE centro", sort: "name" });
+      const two = await center({ query: "lote centro", sort: "name", page: 1 });
+      assert.equal(one.total, 26);
+      assert.equal(one.items.length, 25);
+      assert.equal(two.items.length, 1);
+      assert.equal(one.items[0].name, "Lote Centro 01");
+      assert.equal(two.items[0].name, "Lote Centro 26");
+      assert.ok(!one.items.some((a) => two.items.some((b) => a.id === b.id)));
+      assert.equal(
+        (await center({ niche: "clinicas", state: "never" })).total,
+        26,
+      );
+      assert.equal((await center({ template: proto.template_id })).total, 1);
+      assert.equal(
+        (await center({ ids: [proto.id], state: "published" })).total,
+        1,
+      );
+      assert.equal((await center({ query: "nada corresponde" })).total, 0);
+      assert.deepEqual((await center()).metrics, {
+        total: 27,
+        never: 26,
+        published: 1,
+        pending: 0,
+        unpublished: 0,
+      });
     } finally {
       await db.close();
     }

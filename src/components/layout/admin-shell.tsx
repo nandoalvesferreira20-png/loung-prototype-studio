@@ -22,6 +22,7 @@ const navigation = [
   { href: "/dashboard", label: "Visão geral", icon: LayoutDashboard },
   { href: "/importacoes", label: "Importações", icon: Upload },
   { href: "/prototipos", label: "Protótipos", icon: Layers3 },
+  { href: "/publicacoes", label: "Publicações", icon: ArrowUpRight },
   { href: "/templates", label: "Templates", icon: Blocks },
   { href: "/configuracoes", label: "Configurações", icon: Settings2 },
 ];
@@ -226,7 +227,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               O acesso utiliza Supabase Auth e autorização administrativa. O
               processamento da planilha acontece no navegador. Os protótipos são
               registros privados. Os oito templates possuem prévia desktop e
-              mobile. Revise os dados e confirme a publicação para criar um link público.
+              mobile. Revise os dados e confirme a publicação para criar um link
+              público.
             </p>
             <button className="button primary" onClick={() => setHelp(false)}>
               Entendi

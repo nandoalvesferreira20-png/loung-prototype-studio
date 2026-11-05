@@ -10,6 +10,7 @@ export const config = {
     "/dashboard/:path*",
     "/importacoes/:path*",
     "/prototipos/:path*",
+    "/publicacoes/:path*",
     "/preview/:path*",
     "/templates/:path*",
     "/configuracoes/:path*",

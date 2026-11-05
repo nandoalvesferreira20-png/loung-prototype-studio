@@ -14,9 +14,11 @@ type Review = Extract<
 export function PublicationPanel({
   id,
   activeVersion,
+  onChanged,
 }: {
   id: string;
   activeVersion?: number;
+  onChanged?: () => void;
 }) {
   const router = useRouter();
   const dialog = useRef<HTMLDialogElement>(null);
@@ -38,6 +40,13 @@ export function PublicationPanel({
   }
   async function mutate(remove: boolean) {
     if (!review) return;
+    if (
+      remove &&
+      !window.confirm(
+        "Despublicar este protótipo e retirar seu site do acesso público?",
+      )
+    )
+      return;
     setBusy(true);
     const result = remove
       ? await unpublishPrototype(id, review.publication!.publication_version)
@@ -52,6 +61,7 @@ export function PublicationPanel({
       setMessage(remove ? "Site despublicado." : "Snapshot publicado.");
       await load();
       router.refresh();
+      onChanged?.();
     } else setMessage(result.error);
     setBusy(false);
   }
@@ -74,11 +84,20 @@ export function PublicationPanel({
           className="button"
           disabled={busy}
           onClick={async () => {
+            if (
+              !window.confirm(
+                "Despublicar este protótipo e retirar seu site do acesso público?",
+              )
+            )
+              return;
             setBusy(true);
             const result = await unpublishPrototype(id, activeVersion);
             setMessage(result.ok ? "Site despublicado." : result.error);
             setBusy(false);
-            if (result.ok) router.refresh();
+            if (result.ok) {
+              router.refresh();
+              onChanged?.();
+            }
           }}
         >
           Despublicar

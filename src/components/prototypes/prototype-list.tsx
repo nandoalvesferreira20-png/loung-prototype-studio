@@ -61,16 +61,20 @@ export function PrototypeList({
   initial,
   templates,
   error: initialError,
+  initialSelected,
 }: {
   initial: PrototypePage;
   templates: TemplateRow[];
   error?: string;
+  initialSelected?: ManagedPrototype;
 }) {
   const router = useRouter();
   const [data, setData] = useState(initial);
   const [filters, setFilters] = useState(initialFilters);
   const [applied, setApplied] = useState(initialFilters);
-  const [selected, setSelected] = useState<ManagedPrototype | null>(null);
+  const [selected, setSelected] = useState<ManagedPrototype | null>(
+    initialSelected ?? null,
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(initialError ?? "");
   async function load(next: PrototypeFilter) {
@@ -98,7 +102,7 @@ export function PrototypeList({
             <h2>Seus protótipos</h2>
             <p>
               Dados persistidos, com prévia técnica e edição administrativa.
-              Publicação indisponível nesta fase.
+              Gerencie links individuais ou acesse a Central de Publicação.
             </p>
           </div>
         </div>

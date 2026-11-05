@@ -315,7 +315,7 @@ test("Restaurants A: old records, roundtrip, editor controls, renderer and Ver s
   const html = renderToStaticMarkup(
     createElement(PrototypeTable, { items: [row], onInspect: () => {} }),
   );
-  assert.match(html, /Ver site/);
+  assert.match(html, /Visualizar prévia<\/a>/);
   assert.ok(html.includes(`/prototipos/${row.id}/preview`));
   assert.throws(
     () =>

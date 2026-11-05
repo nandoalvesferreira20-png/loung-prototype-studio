@@ -2420,6 +2420,69 @@
   gap: 8px;
   margin-top: 16px;
 }
+.studio-ui .prototype-quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+.studio-ui .prototype-quick-links .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+.studio-ui .prototype-quick-links .icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.studio-ui .prototype-link-feedback {
+  flex-basis: 100%;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.studio-ui .prototype-link-feedback:empty {
+  display: none;
+}
+.studio-ui .prototype-manage-menu summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: 10px 0;
+}
+.studio-ui .selected-prototype-links {
+  padding-left: 20px;
+}
+.studio-ui .selected-prototype-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .studio-ui .prototype-access-table {
+    min-width: 0;
+    width: 100%;
+  }
+  .studio-ui .prototype-access-table thead {
+    display: none;
+  }
+  .studio-ui .prototype-access-table :is(tbody, tr, td) {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+  .studio-ui .prototype-access-table tr {
+    border-top: 1px solid var(--lt-border);
+    padding: 16px 0;
+  }
+  .studio-ui .prototype-access-table td {
+    border: 0;
+    padding: 6px 10px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
 .studio-ui .publication-center {
   min-width: 0;
 }

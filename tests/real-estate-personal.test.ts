@@ -39,13 +39,16 @@ test("Prototype table: Ver site follows the renderer registry for real estate A 
     );
   for (const variant of ["A", "B"] as const) {
     const html = table({ ...item, variant });
-    assert.match(html, /Ver site/);
+    assert.match(html, /Visualizar prévia<\/a>/);
     assert.ok(html.includes(`/prototipos/${item.id}/preview`));
   }
-  assert.doesNotMatch(table({ ...item, customization_data: {} }), /Ver site/);
+  assert.doesNotMatch(
+    table({ ...item, customization_data: {} }),
+    /Visualizar prévia<\/a>/,
+  );
   assert.doesNotMatch(
     table({ ...item, niche: "restaurantes", customization_data: {} }),
-    /Ver site/,
+    /Visualizar prévia<\/a>/,
   );
 });
 function fixture(

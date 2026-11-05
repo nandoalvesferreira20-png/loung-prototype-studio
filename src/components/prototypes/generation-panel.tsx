@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Search, Sparkles } from "lucide-react";
+import { Check, Search, Sparkles, Eye } from "lucide-react";
+import { generatedPrototypeGroups } from "@/lib/prototype-links";
 import { niches } from "@/config/catalog";
 import {
   generationLeadsAction,
@@ -461,16 +462,33 @@ export function GenerationPanel({
             possuíam protótipo. Nenhuma publicação foi realizada.
           </p>
           {result.prototypes.length > 0 && (
-            <a
-              className="button primary"
-              href={`/publicacoes?ids=${result.prototypes
-                .slice(-25)
-                .map((p) => p.id)
-                .join(",")}`}
-            >
-              Revisar para publicação
-              {result.prototypes.length > 25 ? " — últimos 25 criados" : ""}
-            </a>
+            <div className="publication-toolbar">
+              {generatedPrototypeGroups(
+                result.prototypes.map((item) => item.id),
+              ).map((ids, index, groups) => (
+                <a
+                  key={index}
+                  className="button"
+                  href={`/publicacoes?ids=${ids.join(",")}`}
+                >
+                  <Eye size={16} aria-hidden="true" />
+                  Visualizar protótipos gerados
+                  {groups.length > 1
+                    ? ` — grupo ${index + 1} de ${groups.length} (${ids.length} itens)`
+                    : ""}
+                </a>
+              ))}
+              <a
+                className="button primary"
+                href={`/publicacoes?ids=${result.prototypes
+                  .slice(-25)
+                  .map((p) => p.id)
+                  .join(",")}`}
+              >
+                Revisar para publicação
+                {result.prototypes.length > 25 ? " — últimos 25 criados" : ""}
+              </a>
+            </div>
           )}
         </div>
       )}

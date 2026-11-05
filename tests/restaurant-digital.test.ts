@@ -392,7 +392,7 @@ test("Digital B: editor, old JSONB compatibility, strict version, registry and V
     renderToStaticMarkup(
       createElement(PrototypeTable, { items: [row], onInspect: () => {} }),
     ),
-    /Ver site/,
+    /Visualizar prévia<\/a>/,
   );
   assert.notEqual(
     digitalRestaurantModel(restaurantFixture()).scope,

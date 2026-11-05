@@ -4,6 +4,7 @@ import Link from "next/link";
 import { niches } from "@/config/catalog";
 import { formatDate } from "@/lib/prototypes";
 import { rendererRegistry } from "@/lib/generation/registry";
+import { QuickPrototypeLinks } from "./quick-prototype-links";
 import {
   personalizationSchema,
   type ManagedPrototype,
@@ -18,10 +19,12 @@ export function PrototypeTable({
   items,
   onInspect,
   publication,
+  publicBase = null,
 }: {
   items: ManagedPrototype[];
   onInspect: (item: ManagedPrototype) => void;
   publication?: (id: string) => ReactNode;
+  publicBase?: string | null;
 }) {
   return (
     <div
@@ -30,7 +33,7 @@ export function PrototypeTable({
       role="region"
       aria-label="Protótipos com rolagem horizontal"
     >
-      <table>
+      <table className="prototype-access-table">
         <thead>
           <tr>
             <th>Empresa</th>
@@ -61,7 +64,13 @@ export function PrototypeTable({
                         .join("")}
                     </span>
                     <div>
-                      <strong>{name}</strong>
+                      <Link
+                        className="text-link"
+                        href={`/prototipos/${item.id}/preview`}
+                        aria-label={`Visualizar prévia de ${name}`}
+                      >
+                        <strong>{name}</strong>
+                      </Link>
                       <small>
                         {personalization.success
                           ? (personalization.data.confirmed.specialty ??
@@ -110,17 +119,27 @@ export function PrototypeTable({
                   <small>Publicação por snapshot aprovado</small>
                 </td>
                 <td>
-                  {publication?.(item.id)}
-                  {rendererRegistry[`${item.niche}:${item.variant}`]
-                    ?.renderer &&
-                    personalization.success && (
-                      <Link
-                        href={`/prototipos/${item.id}/preview`}
-                        className="button"
-                      >
-                        Ver site
-                      </Link>
-                    )}
+                  <QuickPrototypeLinks
+                    id={item.id}
+                    name={name}
+                    base={publicBase}
+                    slug={item.publication?.slug ?? item.slug}
+                    active={
+                      !item.publicationUnavailable &&
+                      !!item.publication &&
+                      !item.publication.unpublished_at
+                    }
+                    previewAvailable={
+                      !!rendererRegistry[`${item.niche}:${item.variant}`]
+                        ?.renderer && personalization.success
+                    }
+                  />
+                  {publication && (
+                    <details className="prototype-manage-menu">
+                      <summary>Publicação</summary>
+                      {publication(item.id)}
+                    </details>
+                  )}
                   <button
                     className="icon-button"
                     onClick={() => onInspect(item)}

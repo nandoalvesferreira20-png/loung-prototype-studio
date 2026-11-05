@@ -171,7 +171,7 @@ export async function prototypeListAction(
       const publications = await client
         .from("published_prototypes")
         .select(
-          "prototype_id,publication_version,source_revision,published_at,unpublished_at",
+          "prototype_id,slug,publication_version,source_revision,published_at,unpublished_at",
         )
         .in(
           "prototype_id",

@@ -287,6 +287,7 @@ export type GenerationLeadPage = {
 };
 export type ManagedPrototype = PrototypeRow & {
   publication?: {
+    slug?: string;
     publication_version: number;
     source_revision: number;
     published_at: string;

@@ -62,11 +62,13 @@ export function PrototypeList({
   templates,
   error: initialError,
   initialSelected,
+  publicBase = null,
 }: {
   initial: PrototypePage;
   templates: TemplateRow[];
   error?: string;
   initialSelected?: ManagedPrototype;
+  publicBase?: string | null;
 }) {
   const router = useRouter();
   const [data, setData] = useState(initial);
@@ -190,6 +192,7 @@ export function PrototypeList({
           <span>Até 25 por página</span>
         </div>
         <PrototypeTable
+          publicBase={publicBase}
           items={data.items}
           onInspect={setSelected}
           publication={(id) => {

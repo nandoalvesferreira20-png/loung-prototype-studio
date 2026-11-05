@@ -54,7 +54,17 @@ export async function sharingPublications(raw: unknown) {
       url: publicLink(base, item.slug),
       publishedAt: item.published_at ?? "",
     }));
-    return { ok: true as const, rows, omitted: ids.length - rows.length };
+    const publications = result.data.items.map((item, index) => ({
+      id: item.id,
+      company: rows[index].company,
+      url: rows[index].url,
+    }));
+    return {
+      ok: true as const,
+      rows,
+      publications,
+      omitted: ids.length - rows.length,
+    };
   } catch {
     return {
       ok: false as const,

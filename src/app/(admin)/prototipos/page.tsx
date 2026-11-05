@@ -7,6 +7,7 @@ import { GenerationPanel } from "@/components/prototypes/generation-panel";
 import { generationLeadsAction, prototypeListAction } from "./actions";
 import { listPersistedTemplates } from "@/services/database";
 import { getPrivatePreview } from "@/services/preview";
+import { publicBaseUrl } from "@/lib/publication";
 export const maxDuration = 30;
 export default async function PrototypesPage({
   searchParams,
@@ -14,6 +15,12 @@ export default async function PrototypesPage({
   searchParams: Promise<{ edit?: string }>;
 }) {
   await requireAdminPage();
+  let publicBase: string | null = null;
+  try {
+    publicBase = publicBaseUrl();
+  } catch {
+    /* Public links remain unavailable until configured. */
+  }
   const edit = (await searchParams).edit;
   const target = edit ? await getPrivatePreview(edit) : null;
   const initialSelected = target
@@ -55,6 +62,7 @@ export default async function PrototypesPage({
         error={leads.ok ? undefined : leads.message}
       />
       <PrototypeList
+        publicBase={publicBase}
         initialSelected={initialSelected}
         key={`${items.total}:${items.items.map((i) => `${i.id}:${i.revision}:${i.publication?.publication_version ?? 0}`).join(",")}`}
         initial={items}

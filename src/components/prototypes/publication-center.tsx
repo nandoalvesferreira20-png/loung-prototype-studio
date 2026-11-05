@@ -1,6 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Link2 } from "lucide-react";
+import { openingSelection } from "@/lib/prototype-links";
+import { QuickPrototypeLinks } from "./quick-prototype-links";
+import { SelectedPrototypeLinks } from "./selected-prototype-links";
 import { niches } from "@/config/catalog";
 import {
   listPublications,
@@ -55,6 +59,9 @@ export function PublicationCenter({
   const [message, setMessage] = useState(initial.ok ? "" : initial.error);
   const [reviewOpen, setReviewOpen] = useState(false);
   const [approved, setApproved] = useState(false);
+  const [opening, setOpening] = useState<ReturnType<
+    typeof openingSelection
+  > | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const lock = useRef(false);
   useEffect(() => {
@@ -62,6 +69,25 @@ export function PublicationCenter({
       dialog.current.showModal();
   }, [reviewOpen]);
   const blocked = reviews.filter((r) => !r.result.ok).length;
+  async function prepareOpening() {
+    if (lock.current || !selection.length) return;
+    lock.current = true;
+    setBusy(true);
+    try {
+      const result = await sharingPublications(
+        selection.map((item) => item.id),
+      );
+      if (result.ok) {
+        setMessage("");
+        setOpening(openingSelection(selection, result.publications));
+      } else setMessage(result.error);
+    } catch {
+      setMessage("Não foi possível confirmar os links. Tente novamente.");
+    } finally {
+      lock.current = false;
+      setBusy(false);
+    }
+  }
   const eligible = reviews.filter((r) => r.result.ok);
   const reviewedSelection =
     reviews.length === selection.length &&
@@ -472,10 +498,20 @@ export function PublicationCenter({
           <strong>{selection.length} selecionado(s) · limite 25</strong>
           <button
             className="button"
+            disabled={busy || !selection.length || !base}
+            onClick={() => void prepareOpening()}
+          >
+            <Link2 size={16} aria-hidden="true" />
+            Abrir selecionados
+          </button>
+          <button
+            className="button"
             disabled={busy || !visible.length}
             onClick={() => select(visible, !allPageSelected)}
           >
-            {allPageSelected ? "Desmarcar esta página" : "Selecionar esta página"}
+            {allPageSelected
+              ? "Desmarcar esta página"
+              : "Selecionar esta página"}
           </button>
           <button
             className="button"
@@ -590,10 +626,6 @@ export function PublicationCenter({
             <tbody>
               {visible.map((item) => {
                 const reviewed = reviews.find((r) => r.item.id === item.id);
-                const url =
-                  base && item.state === "published"
-                    ? `${base}/p/${item.slug}`
-                    : null;
                 return (
                   <tr key={item.id}>
                     <td>
@@ -606,7 +638,13 @@ export function PublicationCenter({
                       />
                     </td>
                     <td>
-                      <strong>{item.name}</strong>
+                      <Link
+                        className="text-link"
+                        href={`/prototipos/${item.id}/preview`}
+                        aria-label={`Visualizar prévia de ${item.name}`}
+                      >
+                        <strong>{item.name}</strong>
+                      </Link>
                       <small>Rascunho v{item.revision}</small>
                     </td>
                     <td>
@@ -642,22 +680,13 @@ export function PublicationCenter({
                       <small>Publicado: {date(item.published_at)}</small>
                     </td>
                     <td>
-                      {url ? (
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-link"
-                        >
-                          Abrir site ↗
-                        </a>
-                      ) : (
-                        <small>
-                          {item.state === "published"
-                            ? "Configure a URL pública"
-                            : "Sem link ativo"}
-                        </small>
-                      )}
+                      <QuickPrototypeLinks
+                        id={item.id}
+                        name={item.name}
+                        slug={item.slug}
+                        base={base}
+                        active={item.state === "published"}
+                      />
                       <details>
                         <summary>Ações do protótipo</summary>
                         <div className="publication-row-actions">
@@ -684,13 +713,6 @@ export function PublicationCenter({
                           </button>
                           {item.state === "published" && (
                             <>
-                              <button
-                                className="text-link"
-                                disabled={busy || !base}
-                                onClick={() => void share([item.id], false)}
-                              >
-                                Copiar link
-                              </button>
                               <button
                                 className="text-link"
                                 disabled={busy}
@@ -801,6 +823,20 @@ export function PublicationCenter({
             </button>
           </div>
         </section>
+      )}
+      {opening && (
+        <SelectedPrototypeLinks
+          data={opening}
+          busy={busy}
+          message={message}
+          onClose={() => setOpening(null)}
+          onShare={(csv) =>
+            void share(
+              opening.links.map((item) => item.id),
+              csv,
+            )
+          }
+        />
       )}
       {reviewOpen && (
         <dialog

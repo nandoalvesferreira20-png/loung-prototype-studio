@@ -86,6 +86,35 @@ test(
         assert.match(response.headers.get("cache-control") ?? "", /no-store/);
         assert.match(response.headers.get("x-robots-tag") ?? "", /noindex/);
         const html = await response.text();
+        if (entry.niche === "clinicas") {
+          for (const file of [
+            "clinic-reception-hero",
+            "doctor-consultation-main",
+            "clinic-room-structure",
+            "consultation-detail",
+          ]) {
+            const asset = `/templates/clinics/shared/${file}.png`;
+            assert.ok(
+              html.includes(file),
+              `${slug}: ${file} rendered in public snapshot`,
+            );
+            const direct = await fetch(`${base}${asset}`);
+            assert.equal(direct.status, 200, asset);
+            assert.match(
+              direct.headers.get("content-type") ?? "",
+              /image\/png/,
+            );
+            const optimized = await fetch(
+              `${base}/_next/image?url=${encodeURIComponent(asset)}&w=640&q=75`,
+            );
+            assert.equal(optimized.status, 200, `optimized ${asset}`);
+            assert.match(
+              optimized.headers.get("content-type") ?? "",
+              /image\//,
+            );
+            assert.ok((await optimized.arrayBuffer()).byteLength > 1000);
+          }
+        }
         assert.ok(html.includes(draft.confirmed.name), slug);
         assert.match(
           html,

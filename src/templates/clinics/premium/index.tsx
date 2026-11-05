@@ -129,6 +129,7 @@ export function PremiumClinic({
       <section id="sobre" className="premiumAbout" key="about">
         <PremiumPhotoFrame
           photo={photo("institutional")}
+          fallback={defaults.institutional}
           role="institutional"
         />
         <div>
@@ -177,9 +178,21 @@ export function PremiumClinic({
           </p>
         </div>
         <div className="premiumGallery">
-          <PremiumPhotoFrame photo={photo("room")} role="room" />
-          <PremiumPhotoFrame photo={photo("detail")} role="detail" />
-          <PremiumPhotoFrame photo={photo("hero")} role="detail" />
+          <PremiumPhotoFrame
+            photo={photo("room")}
+            fallback={m.specialtyId === "general" ? roomPhoto : null}
+            role="room"
+          />
+          <PremiumPhotoFrame
+            photo={photo("detail")}
+            fallback={defaults.detail}
+            role="detail"
+          />
+          <PremiumPhotoFrame
+            photo={photo("hero")}
+            fallback={defaults.hero}
+            role="detail"
+          />
         </div>
       </section>
     ),
@@ -231,7 +244,12 @@ export function PremiumClinic({
       </header>
       <section id="conteudo" className="premiumHero">
         <div className="premiumHeroVisual">
-          <PremiumPhotoFrame photo={photo("hero")} role="hero" priority />
+          <PremiumPhotoFrame
+            photo={photo("hero")}
+            fallback={defaults.hero}
+            role="hero"
+            priority
+          />
         </div>
         <div className="premiumHeroCopy">
           <span className="eyebrow">{m.specialty || "Conheça a clínica"}</span>

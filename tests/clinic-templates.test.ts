@@ -17,6 +17,8 @@ import { createElement } from "react";
 import { PremiumClinic } from "../src/templates/clinics/premium";
 import { premiumContent } from "../src/templates/clinics/premium/content";
 import { premiumPhotography } from "../src/templates/clinics/premium/photography";
+import { clinicPhotoSource } from "../src/templates/clinics/shared/photo-recovery";
+import { publicSnapshot, publicRendererInput } from "../src/lib/publication";
 import {
   loadPrivatePreview,
   type PreviewPort,
@@ -69,6 +71,66 @@ const template = (variant: "A" | "B") => ({
 });
 const render = (variant: "A" | "B", data = fixture()) =>
   renderToStaticMarkup(renderPersistedTemplate(template(variant), data));
+
+test("clinic images: tracked public PNGs have exact names, signatures and dimensions", () => {
+  for (const [name, width, height] of [
+    ["clinic-reception-hero", 1448, 1086],
+    ["clinic-room-structure", 1448, 1086],
+    ["doctor-consultation-main", 1122, 1402],
+    ["consultation-detail", 1122, 1402],
+  ] as const) {
+    const bytes = readFileSync(`public/templates/clinics/shared/${name}.png`);
+    assert.equal(bytes.subarray(0, 8).toString("hex"), "89504e470d0a1a0a");
+    assert.equal(bytes.readUInt32BE(16), width);
+    assert.equal(bytes.readUInt32BE(20), height);
+  }
+});
+
+test("clinic images: recovery preserves chosen photos, explicit removal and source changes without loops", () => {
+  const chosen = "/templates/clinics/authorized/photo.webp";
+  const fallback = premiumPhotography.hero!.src;
+  assert.equal(clinicPhotoSource(chosen, fallback, []), chosen);
+  assert.equal(clinicPhotoSource(chosen, fallback, [chosen]), fallback);
+  assert.equal(clinicPhotoSource(chosen, fallback, [chosen, fallback]), null);
+  assert.equal(clinicPhotoSource(null, fallback, []), null);
+  assert.equal(clinicPhotoSource("", fallback, []), null);
+  assert.equal(clinicPhotoSource(chosen, chosen, [chosen]), null);
+  assert.equal(clinicPhotoSource(chosen, null, [chosen]), null);
+  assert.equal(
+    clinicPhotoSource("/templates/clinics/new.png", fallback, [chosen]),
+    "/templates/clinics/new.png",
+  );
+});
+
+test("clinic images: legacy local paths and overrides survive snapshot and public rendering for both variants", () => {
+  for (const variant of ["A", "B"] as const) {
+    const data = fixture();
+    const chosen = "/templates/clinics/premium/waiting-area.jpg";
+    data.clinicDesign = {
+      version: 1,
+      images: { hero: chosen },
+      ...(variant === "B"
+        ? {
+            appointments: {
+              version: 1 as const,
+              heroImage: { src: chosen, illustrative: false },
+            },
+          }
+        : {}),
+    };
+    const original = JSON.stringify(data);
+    const snapshot = publicSnapshot(data);
+    const publicHtml = render(variant, publicRendererInput(snapshot));
+    assert.match(render(variant, data), /waiting-area/);
+    assert.match(publicHtml, /waiting-area/);
+    assert.equal(JSON.stringify(data), original);
+    assert.deepEqual(publicSnapshot(publicRendererInput(snapshot)), snapshot);
+    data.clinicDesign.images = { hero: null };
+    if (variant === "B")
+      data.clinicDesign.appointments!.heroImage = { src: null };
+    assert.doesNotMatch(render(variant, data), /waiting-area/);
+  }
+});
 
 test("templates A/B: páginas completas, identificação conceitual e estruturas distintas", () => {
   const data = fixture({
@@ -299,8 +361,14 @@ test("prévia: autorização antecede leituras, dados persistidos e revisões no
 });
 test("proteção: prévia continua privada e publicação usa rota separada", () => {
   assert.ok(existsSync("src/app/p/[slug]/page.tsx"));
-  assert.match(readFileSync("src/services/publication.ts", "utf8"), /from\("published_prototypes"\)/);
-  assert.doesNotMatch(readFileSync("src/services/publication.ts", "utf8"), /from\("leads"\)/);
+  assert.match(
+    readFileSync("src/services/publication.ts", "utf8"),
+    /from\("published_prototypes"\)/,
+  );
+  assert.doesNotMatch(
+    readFileSync("src/services/publication.ts", "utf8"),
+    /from\("leads"\)/,
+  );
   const route = readFileSync(
     "src/app/preview/prototipos/[id]/page.tsx",
     "utf8",

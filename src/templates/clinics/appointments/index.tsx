@@ -43,6 +43,7 @@ export function AppointmentsClinic({ model: m }: { model: ClinicModel }) {
   const logo = d?.logo !== undefined ? d.logo : m.design?.logo;
   const copy = appointmentContent(m),
     photos = appointmentPhotos(m);
+  const fallbackPhotos = appointmentPhotos({ ...m, design: undefined });
   const sections = d?.sections ?? [...appointmentSectionIds];
   const enabled = (id: AppointmentSection) => sections.includes(id);
   const hidden = d?.hiddenContacts ?? [];
@@ -260,7 +261,11 @@ export function AppointmentsClinic({ model: m }: { model: ClinicModel }) {
     ),
     about: (
       <section key="about" id="sobre" className="bAbout bContainer">
-        <AppointmentPhotoFrame photo={photos.about} role="about" />
+        <AppointmentPhotoFrame
+          photo={photos.about}
+          fallback={fallbackPhotos.about}
+          role="about"
+        />
         <div>
           <span className="eyebrow">Sobre {m.name}</span>
           <h2>
@@ -332,6 +337,9 @@ export function AppointmentsClinic({ model: m }: { model: ClinicModel }) {
               <AppointmentPhotoFrame
                 key={`${photo.src}-${i}`}
                 photo={photo}
+                fallback={
+                  fallbackPhotos.gallery[i % fallbackPhotos.gallery.length]
+                }
                 role="gallery"
               />
             ))}
@@ -465,7 +473,12 @@ export function AppointmentsClinic({ model: m }: { model: ClinicModel }) {
           </small>
         </div>
         <div className="bHeroVisual">
-          <AppointmentPhotoFrame photo={photos.hero} role="hero" priority />
+          <AppointmentPhotoFrame
+            photo={photos.hero}
+            fallback={fallbackPhotos.hero}
+            role="hero"
+            priority
+          />
           <div className="bFloatingLinks">
             <a href={destination}>
               <MessageCircle />

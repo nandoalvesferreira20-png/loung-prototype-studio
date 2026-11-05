@@ -2,17 +2,21 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { AppointmentPhoto } from "../../../lib/generation/appointments-design";
+import { clinicPhotoSource } from "../shared/photo-recovery";
 export function AppointmentPhotoFrame({
   photo,
   role,
   priority = false,
+  fallback = null,
 }: {
   photo: AppointmentPhoto;
   role: "hero" | "about" | "gallery";
   priority?: boolean;
+  fallback?: AppointmentPhoto | null;
 }) {
-  const [failedSrc, setFailedSrc] = useState<string | null>(null);
-  if (!photo.src || failedSrc === photo.src)
+  const [failed, setFailed] = useState<string[]>([]);
+  const src = clinicPhotoSource(photo.src, fallback?.src ?? null, failed);
+  if (!src)
     return (
       <div className={`bPhotoFallback bPhoto-${role}`} role="note">
         <span>Imagem de apresentação</span>
@@ -22,24 +26,23 @@ export function AppointmentPhotoFrame({
         </p>
       </div>
     );
-  const portrait = /doctor-consultation-main|consultation-detail/.test(
-    photo.src,
-  );
-  const illustrative = photo.illustrative !== false;
-  const position = photo.position ?? "center";
+  const displayed = src === photo.src ? photo : fallback!;
+  const portrait = /doctor-consultation-main|consultation-detail/.test(src);
+  const illustrative = displayed.illustrative !== false;
+  const position = displayed.position ?? "center";
   const objectPosition =
     role === "hero" && ["center", "left", "right"].includes(position)
       ? `${position} 25%`
       : position;
   const caption =
-    photo.caption ||
+    displayed.caption ||
     (illustrative
       ? "Referência visual de atendimento e ambiente"
       : "Imagem fornecida pela clínica");
   return (
     <figure className={`bPhoto bPhoto-${role}`}>
       <Image
-        src={photo.src}
+        src={src}
         alt={`${caption}${illustrative ? "; imagem ilustrativa, não representa instalações ou profissionais da clínica" : ""}`}
         width={portrait ? 1122 : 1448}
         height={portrait ? 1402 : 1086}
@@ -50,7 +53,13 @@ export function AppointmentPhotoFrame({
             : "(max-width: 767px) 100vw, 58vw"
         }
         style={{ objectPosition }}
-        onError={() => setFailedSrc(photo.src)}
+        onError={() => {
+          console.warn("[clinic-image] Falha de carregamento", {
+            template: "B",
+            role,
+          });
+          setFailed((previous) => [...previous, src]);
+        }}
       />
       <figcaption>
         {caption}

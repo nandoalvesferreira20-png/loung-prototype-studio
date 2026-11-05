@@ -181,7 +181,18 @@ test("especialidades: seis configurações e assets locais; nunca inserem servi�
     for (const variant of ["A", "B"] as const) {
       const html = render(variant, fixture({ specialty: name }));
       if (id === "general") assert.match(html, /clinic-reception-hero/);
-      else assert.doesNotMatch(html, /doctor-consultation-main/);
+      else {
+        assert.doesNotMatch(
+          html,
+          /doctor-consultation-main|consultation-detail/,
+        );
+        assert.match(html, /waiting-area/);
+        assert.match(html, /warm-interior/);
+        assert.doesNotMatch(
+          html,
+          /Fotografia do ambiente em preparação|bPhotoFallback/,
+        );
+      }
       assert.doesNotMatch(html, /\.svg/);
       assert.ok(html.includes(name));
       assert.doesNotMatch(html, /id="servicos"/);
@@ -198,6 +209,56 @@ test("dados ausentes: não inventa endereço, telefone, serviços ou informaçõ
     );
     assert.match(html, /Conteúdo de demonstração/);
     assert.match(html, /canais de contato serão apresentados após confirmação/);
+  }
+});
+
+test("production regression: Estética without clinicDesign gets photos in draft and unchanged public snapshot", () => {
+  const data = fixture({ specialty: "Estética" });
+  assert.equal(data.clinicDesign, undefined);
+  const snapshot = publicSnapshot(data);
+  const before = JSON.stringify(snapshot);
+  for (const variant of ["A", "B"] as const) {
+    for (const input of [data, publicRendererInput(snapshot)]) {
+      const html = render(variant, input);
+      assert.equal((html.match(/<img\b/g) ?? []).length, 5);
+      assert.doesNotMatch(
+        html,
+        /Fotografia do ambiente em preparação|bPhotoFallback|doctor-consultation-main/,
+      );
+      assert.match(html, /waiting-area/);
+      assert.match(html, /warm-interior/);
+    }
+  }
+  assert.equal(JSON.stringify(snapshot), before, "no rewriting approved data");
+  data.clinicDesign = {
+    version: 1,
+    images: { hero: null, institutional: null, detail: null, room: null },
+    appointments: {
+      version: 1,
+      heroImage: { src: null },
+      aboutImage: { src: null },
+      gallery: [],
+    },
+  };
+  for (const variant of ["A", "B"] as const) {
+    assert.doesNotMatch(render(variant, data), /<img\b/);
+    assert.doesNotMatch(
+      render(variant, publicRendererInput(publicSnapshot(data))),
+      /<img\b/,
+    );
+  }
+  const chosen = "/templates/clinics/shared/clinic-room-structure.png";
+  data.clinicDesign.images!.hero = chosen;
+  data.clinicDesign.appointments!.heroImage = {
+    src: chosen,
+    illustrative: false,
+  };
+  for (const variant of ["A", "B"] as const) {
+    assert.match(render(variant, data), /clinic-room-structure/);
+    assert.match(
+      render(variant, publicRendererInput(publicSnapshot(data))),
+      /clinic-room-structure/,
+    );
   }
 });
 test("links: esquemas inseguros recusados; contatos sem inferência de país e localização codificada", () => {

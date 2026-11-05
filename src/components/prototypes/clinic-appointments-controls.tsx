@@ -9,6 +9,7 @@ import {
   type AppointmentSection,
 } from "@/lib/generation/appointments-design";
 import { resolveSpecialty } from "@/templates/clinics/shared/specialties";
+import { clinicDefaultPhoto } from "@/templates/clinics/shared/default-photography";
 const assetNames = [
   "doctor-consultation-main",
   "clinic-reception-hero",
@@ -39,9 +40,8 @@ export function ClinicAppointmentsControls({
   const d = value ?? { version: 1 };
   const [newService, setNewService] = useState("");
   const sections = d.sections ?? [...appointmentSectionIds];
-  const medical = resolveSpecialty(specialty) === "general";
   const defaultPhoto = (file: string): AppointmentPhoto => ({
-    src: medical ? `/templates/clinics/shared/${file}.png` : null,
+    src: clinicDefaultPhoto(file, resolveSpecialty(specialty)).src,
     illustrative: true,
     position: "center",
   });

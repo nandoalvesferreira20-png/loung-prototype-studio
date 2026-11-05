@@ -14,8 +14,7 @@ import { Navigation } from "../shared/navigation";
 import { ContactLinks, Location } from "../shared/sections";
 import { premiumContent } from "./content";
 import {
-  premiumPhotography,
-  roomPhoto,
+  premiumPhotographyFor,
   type PremiumPhotography,
   type PremiumPhoto,
 } from "./photography";
@@ -41,18 +40,15 @@ export function PremiumClinic({
       : m.telephone
         ? "Fale com a clínica"
         : "Ver formas de contato");
-  const defaults =
-    photography ??
-    (m.specialtyId === "general"
-      ? premiumPhotography
-      : { hero: null, institutional: null, detail: null });
+  const specialtyPhotos = premiumPhotographyFor(m.specialtyId);
+  const defaults = photography ?? specialtyPhotos;
   function photo(
     slot: "hero" | "institutional" | "detail" | "room",
   ): PremiumPhoto | null {
     const base =
       slot === "room"
-        ? !photography && m.specialtyId === "general"
-          ? roomPhoto
+        ? !photography
+          ? specialtyPhotos.room
           : null
         : defaults[slot];
     const src = d?.images?.[slot];
@@ -180,7 +176,7 @@ export function PremiumClinic({
         <div className="premiumGallery">
           <PremiumPhotoFrame
             photo={photo("room")}
-            fallback={m.specialtyId === "general" ? roomPhoto : null}
+            fallback={!photography ? specialtyPhotos.room : null}
             role="room"
           />
           <PremiumPhotoFrame

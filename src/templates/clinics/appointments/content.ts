@@ -1,5 +1,6 @@
 import type { ClinicModel } from "../shared/adapter";
 import type { AppointmentPhoto } from "../../../lib/generation/appointments-design";
+import { clinicDefaultPhoto } from "../shared/default-photography";
 export function appointmentContent(m: ClinicModel) {
   const d = m.design?.appointments;
   const oldHeadline =
@@ -33,7 +34,6 @@ export function appointmentContent(m: ClinicModel) {
 }
 export function appointmentPhotos(m: ClinicModel) {
   const d = m.design?.appointments;
-  const medical = m.specialtyId === "general";
   const fallback = (
     file: string,
     caption: string,
@@ -42,10 +42,11 @@ export function appointmentPhotos(m: ClinicModel) {
     src:
       override !== undefined
         ? override
-        : medical
-          ? `/templates/clinics/shared/${file}.png`
-          : null,
-    caption,
+        : clinicDefaultPhoto(file, m.specialtyId).src,
+    caption:
+      override !== undefined || m.specialtyId === "general"
+        ? caption
+        : clinicDefaultPhoto(file, m.specialtyId).caption,
     illustrative: true,
     position: "center",
   });

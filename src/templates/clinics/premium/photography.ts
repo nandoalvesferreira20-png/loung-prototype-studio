@@ -1,3 +1,5 @@
+import { clinicDefaultPhoto } from "../shared/default-photography";
+import type { SpecialtyId } from "../shared/specialties";
 export type PremiumPhoto = Readonly<{
   src: string;
   alt: string;
@@ -35,3 +37,22 @@ export const premiumPhotography: PremiumPhotography = {
   ),
   detail: localPhoto("consultation-detail", "Detalhe ilustrativo de consulta"),
 };
+
+export function premiumPhotographyFor(specialty: SpecialtyId) {
+  if (specialty === "general")
+    return { ...premiumPhotography, room: roomPhoto };
+  const photo = (file: string): PremiumPhoto => {
+    const { caption, ...asset } = clinicDefaultPhoto(file, specialty);
+    return {
+      ...asset,
+      alt: `${caption}; não representa esta clínica`,
+      position: "center",
+    };
+  };
+  return {
+    hero: photo("clinic-reception-hero"),
+    institutional: photo("doctor-consultation-main"),
+    detail: photo("consultation-detail"),
+    room: photo("clinic-room-structure"),
+  };
+}

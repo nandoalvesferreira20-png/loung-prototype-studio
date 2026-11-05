@@ -126,6 +126,37 @@ test(
           /sourceLeadId|sourceUpdatedAt|confirmedOrigin|customization_data/,
         );
       }
+      // Same state as the affected production snapshot: Estética, no clinicDesign.
+      for (const variant of ["a", "b"]) {
+        const draft = restaurantFixture({
+          niche: "clinicas",
+          specialty: "Estética",
+        });
+        draft.illustrative = demonstrationContent.clinicas;
+        delete draft.clinicDesign;
+        state = {
+          ...state,
+          template: `clinicas-${variant}`,
+          data: publicSnapshot(draft),
+        };
+        save();
+        const html = await (await fetch(`${base}/p/${state.slug}`)).text();
+        assert.equal((html.match(/<img\b/g) ?? []).length, 5);
+        assert.doesNotMatch(
+          html,
+          /Fotografia do ambiente em preparação|bPhotoFallback/,
+        );
+        for (const name of ["waiting-area", "warm-interior"]) {
+          assert.match(html, new RegExp(name));
+          const asset = `/templates/clinics/premium/${name}.jpg`;
+          assert.equal((await fetch(`${base}${asset}`)).status, 200);
+          const optimized = await fetch(
+            `${base}/_next/image?url=${encodeURIComponent(asset)}&w=640&q=75`,
+          );
+          assert.equal(optimized.status, 200);
+          assert.match(optimized.headers.get("content-type") ?? "", /image\//);
+        }
+      }
       state.data.confirmed.name = "Republicação aprovada";
       save();
       assert.match(

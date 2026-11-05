@@ -1,12 +1,7 @@
 "use client";
 import { ClinicAppointmentsControls } from "./clinic-appointments-controls";
 import type { ClinicDesign } from "@/lib/generation/contracts";
-const assets = [
-  "clinic-reception-hero",
-  "doctor-consultation-main",
-  "clinic-room-structure",
-  "consultation-detail",
-];
+import { clinicPhotoNames as assets } from "@/templates/clinics/shared/default-photography";
 export function ClinicDesignEditor({
   value,
   onChange,
@@ -131,12 +126,12 @@ export function ClinicDesignEditor({
                   className="import-input"
                   value={d.images?.[slot] ?? ""}
                   placeholder="/templates/clinics/empresa/foto.webp"
-                  onChange={(e) =>
-                    onChange({
-                      ...d,
-                      images: { ...d.images, [slot]: e.target.value || null },
-                    })
-                  }
+                  onChange={(e) => {
+                    const images = { ...d.images };
+                    if (e.target.value) images[slot] = e.target.value;
+                    else delete images[slot];
+                    onChange({ ...d, images });
+                  }}
                 />
               </label>
               <label>

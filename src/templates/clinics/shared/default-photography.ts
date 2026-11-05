@@ -1,26 +1,19 @@
-import type { SpecialtyId } from "./specialties";
+// Official local assets shared by both layouts, their editors and all specialties.
+export const clinicPhotos = [
+  { name: "clinic-reception-hero", width: 1448, height: 1086 },
+  { name: "doctor-consultation-main", width: 1122, height: 1402 },
+  { name: "clinic-room-structure", width: 1448, height: 1086 },
+  { name: "consultation-detail", width: 1122, height: 1402 },
+] as const;
 
-// Clinical consultation photos are reserved for general medicine. Other
-// specialties use the existing neutral interiors, never an absent default.
-export function clinicDefaultPhoto(file: string, specialty: SpecialtyId) {
-  if (specialty !== "general") {
-    const waiting =
-      file === "clinic-reception-hero" || file === "clinic-room-structure";
-    return {
-      src: `/templates/clinics/premium/${waiting ? "waiting-area" : "warm-interior"}.jpg`,
-      width: waiting ? 1600 : 1800,
-      height: waiting ? 2133 : 2700,
-      caption: waiting
-        ? "Referência ilustrativa de recepção"
-        : "Referência ilustrativa de ambiente",
-    };
-  }
-  const portrait =
-    file === "doctor-consultation-main" || file === "consultation-detail";
+export const clinicPhotoNames = clinicPhotos.map((photo) => photo.name);
+
+export function clinicDefaultPhoto(file: string) {
+  const photo = clinicPhotos.find((candidate) => candidate.name === file);
+  if (!photo) throw new Error("unknown_clinic_photo");
   return {
-    src: `/templates/clinics/shared/${file}.png`,
-    width: portrait ? 1122 : 1448,
-    height: portrait ? 1402 : 1086,
-    caption: "Referência ilustrativa de atendimento e ambiente",
+    src: `/templates/clinics/shared/${photo.name}.png`,
+    width: photo.width,
+    height: photo.height,
   };
 }

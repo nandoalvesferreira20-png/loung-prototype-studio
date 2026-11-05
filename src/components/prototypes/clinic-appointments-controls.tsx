@@ -8,14 +8,10 @@ import {
   type AppointmentsDesign,
   type AppointmentSection,
 } from "@/lib/generation/appointments-design";
-import { resolveSpecialty } from "@/templates/clinics/shared/specialties";
-import { clinicDefaultPhoto } from "@/templates/clinics/shared/default-photography";
-const assetNames = [
-  "doctor-consultation-main",
-  "clinic-reception-hero",
-  "clinic-room-structure",
-  "consultation-detail",
-];
+import {
+  clinicDefaultPhoto,
+  clinicPhotoNames as assetNames,
+} from "@/templates/clinics/shared/default-photography";
 const sectionLabels: Record<AppointmentSection, string> = {
   services: "Especialidades",
   about: "Sobre",
@@ -29,7 +25,6 @@ export function ClinicAppointmentsControls({
   onChange,
   services,
   onServicesChange,
-  specialty,
 }: {
   value: AppointmentsDesign | undefined;
   onChange: (value: AppointmentsDesign | undefined) => void;
@@ -41,7 +36,7 @@ export function ClinicAppointmentsControls({
   const [newService, setNewService] = useState("");
   const sections = d.sections ?? [...appointmentSectionIds];
   const defaultPhoto = (file: string): AppointmentPhoto => ({
-    src: clinicDefaultPhoto(file, resolveSpecialty(specialty)).src,
+    src: clinicDefaultPhoto(file).src,
     illustrative: true,
     position: "center",
   });
@@ -118,7 +113,11 @@ export function ClinicAppointmentsControls({
           className="import-input"
           placeholder="/templates/clinics/empresa/foto.webp"
           value={photo?.src ?? ""}
-          onChange={(e) => update({ ...photo, src: e.target.value || null })}
+          onChange={(e) =>
+            update(
+              e.target.value ? { ...photo, src: e.target.value } : undefined,
+            )
+          }
         />
       </label>
       <label>

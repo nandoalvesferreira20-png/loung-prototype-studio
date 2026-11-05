@@ -146,9 +146,15 @@ test(
           html,
           /Fotografia do ambiente em preparação|bPhotoFallback/,
         );
-        for (const name of ["waiting-area", "warm-interior"]) {
+        assert.doesNotMatch(html, /waiting-area|warm-interior/);
+        for (const name of [
+          "clinic-reception-hero",
+          "doctor-consultation-main",
+          "clinic-room-structure",
+          "consultation-detail",
+        ]) {
           assert.match(html, new RegExp(name));
-          const asset = `/templates/clinics/premium/${name}.jpg`;
+          const asset = `/templates/clinics/shared/${name}.png`;
           assert.equal((await fetch(`${base}${asset}`)).status, 200);
           const optimized = await fetch(
             `${base}/_next/image?url=${encodeURIComponent(asset)}&w=640&q=75`,

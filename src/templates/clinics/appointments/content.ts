@@ -39,14 +39,8 @@ export function appointmentPhotos(m: ClinicModel) {
     caption: string,
     override: string | null | undefined,
   ): AppointmentPhoto => ({
-    src:
-      override !== undefined
-        ? override
-        : clinicDefaultPhoto(file, m.specialtyId).src,
-    caption:
-      override !== undefined || m.specialtyId === "general"
-        ? caption
-        : clinicDefaultPhoto(file, m.specialtyId).caption,
+    src: override !== undefined ? override : clinicDefaultPhoto(file).src,
+    caption,
     illustrative: true,
     position: "center",
   });

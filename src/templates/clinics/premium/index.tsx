@@ -14,7 +14,7 @@ import { Navigation } from "../shared/navigation";
 import { ContactLinks, Location } from "../shared/sections";
 import { premiumContent } from "./content";
 import {
-  premiumPhotographyFor,
+  premiumDefaultPhotography,
   type PremiumPhotography,
   type PremiumPhoto,
 } from "./photography";
@@ -40,7 +40,7 @@ export function PremiumClinic({
       : m.telephone
         ? "Fale com a clínica"
         : "Ver formas de contato");
-  const specialtyPhotos = premiumPhotographyFor(m.specialtyId);
+  const specialtyPhotos = premiumDefaultPhotography;
   const defaults = photography ?? specialtyPhotos;
   function photo(
     slot: "hero" | "institutional" | "detail" | "room",

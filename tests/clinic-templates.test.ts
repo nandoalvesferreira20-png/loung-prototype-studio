@@ -17,6 +17,10 @@ import { createElement } from "react";
 import { PremiumClinic } from "../src/templates/clinics/premium";
 import { premiumContent } from "../src/templates/clinics/premium/content";
 import { premiumPhotography } from "../src/templates/clinics/premium/photography";
+import {
+  clinicPhotos,
+  clinicDefaultPhoto,
+} from "../src/templates/clinics/shared/default-photography";
 import { clinicPhotoSource } from "../src/templates/clinics/shared/photo-recovery";
 import { publicSnapshot, publicRendererInput } from "../src/lib/publication";
 import {
@@ -84,6 +88,21 @@ test("clinic images: tracked public PNGs have exact names, signatures and dimens
     assert.equal(bytes.readUInt32BE(16), width);
     assert.equal(bytes.readUInt32BE(20), height);
   }
+});
+
+test("official clinic catalog: every default names a real local PNG and unknown names are rejected", () => {
+  assert.equal(clinicPhotos.length, 4);
+  for (const photo of clinicPhotos) {
+    const asset = clinicDefaultPhoto(photo.name);
+    assert.equal(asset.src, `/templates/clinics/shared/${photo.name}.png`);
+    const bytes = readFileSync(`public${asset.src}`);
+    assert.equal(bytes.readUInt32BE(16), asset.width);
+    assert.equal(bytes.readUInt32BE(20), asset.height);
+  }
+  assert.throws(
+    () => clinicDefaultPhoto("invented-photo"),
+    /unknown_clinic_photo/,
+  );
 });
 
 test("clinic images: recovery preserves chosen photos, explicit removal and source changes without loops", () => {
@@ -180,19 +199,11 @@ test("especialidades: seis configurações e assets locais; nunca inserem servi�
     assert.ok(existsSync(`public${m.image}`));
     for (const variant of ["A", "B"] as const) {
       const html = render(variant, fixture({ specialty: name }));
-      if (id === "general") assert.match(html, /clinic-reception-hero/);
-      else {
-        assert.doesNotMatch(
-          html,
-          /doctor-consultation-main|consultation-detail/,
-        );
-        assert.match(html, /waiting-area/);
-        assert.match(html, /warm-interior/);
-        assert.doesNotMatch(
-          html,
-          /Fotografia do ambiente em preparação|bPhotoFallback/,
-        );
-      }
+      for (const photo of clinicPhotos) assert.ok(html.includes(photo.name));
+      assert.doesNotMatch(
+        html,
+        /waiting-area|warm-interior|Fotografia do ambiente em preparação|bPhotoFallback/,
+      );
       assert.doesNotMatch(html, /\.svg/);
       assert.ok(html.includes(name));
       assert.doesNotMatch(html, /id="servicos"/);
@@ -223,10 +234,9 @@ test("production regression: Estética without clinicDesign gets photos in draft
       assert.equal((html.match(/<img\b/g) ?? []).length, 5);
       assert.doesNotMatch(
         html,
-        /Fotografia do ambiente em preparação|bPhotoFallback|doctor-consultation-main/,
+        /Fotografia do ambiente em preparação|bPhotoFallback|waiting-area|warm-interior/,
       );
-      assert.match(html, /waiting-area/);
-      assert.match(html, /warm-interior/);
+      for (const photo of clinicPhotos) assert.ok(html.includes(photo.name));
     }
   }
   assert.equal(JSON.stringify(snapshot), before, "no rewriting approved data");
@@ -624,7 +634,7 @@ test("B 4.3: contato confirmado, campos ocultos e fallback de canal funcionam", 
   assert.match(html, /id="canais"/);
 });
 
-test("B 4.3: serviços vazios são demonstrativos e fotografia médica não representa outros segmentos", () => {
+test("B: especialidades usam as fotos oficiais ilustrativas sem inventar serviços", () => {
   for (const specialty of [
     "Odontologia",
     "Estética",
@@ -636,10 +646,12 @@ test("B 4.3: serviços vazios são demonstrativos e fotografia médica não repr
     const html = render("B", data);
     assert.doesNotMatch(
       html,
-      /doctor-consultation-main|clinic-reception-hero|id="servicos"|Clínica Geral|Cardiologia|Pediatria/,
+      /id="servicos"|Clínica Geral|Cardiologia|Pediatria|waiting-area|warm-interior/,
     );
     assert.match(html, /prévia demonstrativa/);
     assert.match(html, /após confirmação/);
+    for (const photo of clinicPhotos) assert.ok(html.includes(photo.name));
+    assert.match(html, /Imagem ilustrativa/);
   }
 });
 

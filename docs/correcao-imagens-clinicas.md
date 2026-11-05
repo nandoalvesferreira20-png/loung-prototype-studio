@@ -1,45 +1,80 @@
-﻿# Fotografias de clínicas — diagnóstico em produção
+﻿# Clínicas A/B — restauração das fotografias oficiais
 
-## Causa comprovada
+## Causa e correção
 
-Inspeção da URL pública em 05/11/2026: resposta 200, cinco avisos “Fotografia do ambiente em preparação” e nenhum elemento img. Os quatro PNGs respondem 200. O JavaScript publicado contém o log [clinic-image] da correção anterior. Isso confirma sua presença, mas não permite atribuir um SHA exato ao deploy.
+O problema original era uma condição por especialidade: apenas general recebia as fotografias padrão; Estética e demais especialidades recebiam null. A correção intermediária substituiu esses nulls por waiting-area.jpg e warm-interior.jpg. Esses arquivos existem no repositório, mas são imagens históricas de outras fontes e não são os quatro assets oficiais preparados para os layouts. A substituição intermediária foi removida.
 
-A leitura anônima autorizada de published_prototypes confirmou template clinicas-a, especialidade Estética, payload versão 1, publicação versão 1 e ausência de clinicDesign. Não há opções de imagem ou remoção explícita no snapshot.
+A origem das referências incorretas era shared/default-photography.ts e sua seleção por especialidade, consumida por premium/photography.ts, appointments/content.ts e o editor B. Agora há um catálogo central fechado com somente os quatro PNGs oficiais. Os dois templates e os dois editores utilizam esse catálogo, independentemente da especialidade.
 
-clinicModel resolve a especialidade para aesthetics. Antes da correção, PremiumClinic atribuía padrões nulos para toda especialidade diferente de general; room também era nulo. Sem override, os cinco componentes recebiam photo = null; nenhum src chegava ao Next Image. O aviso era produzido no servidor, antes de carregamento ou CSS. O Template B tinha a mesma condição nos padrões.
+## Inventário real
 
-Não há perda comprovada de caminhos na publicação: campos opcionais ausentes são válidos e devem resolver os padrões do template. A causa é a resolução desses padrões, não um snapshot incompleto.
+Todos os arquivos abaixo estão rastreados no Git. Os originais não foram modificados. Nomes, extensões, formato e dimensões foram confirmados lendo os arquivos.
 
-## Rascunho, prévia e publicação
+| Arquivo em public/templates/clinics/ | Bytes | Dimensões | Uso final |
+|---|---:|---|---|
+| shared/clinic-reception-hero.png | 2021754 | 1448 × 1086 | Padrão oficial |
+| shared/doctor-consultation-main.png | 1741842 | 1122 × 1402 | Padrão oficial |
+| shared/clinic-room-structure.png | 2083496 | 1448 × 1086 | Padrão oficial |
+| shared/consultation-detail.png | 1658401 | 1122 × 1402 | Padrão oficial |
+| premium/waiting-area.jpg | 348957 | 1600 × 2133 | Histórico; somente se escolhido explicitamente |
+| premium/warm-interior.jpg | 656435 | 1800 × 2700 | Histórico; somente se escolhido explicitamente |
 
-O editor usa renderPersistedTemplate com dados validados; a prévia privada usa loadPrivatePreview e o mesmo registro; a página pública reconstrói a entrada pelo publicRendererInput e usa o mesmo registro/adaptador. A condição incorreta está no renderizador compartilhado.
+Também existem os seis SVGs históricos aesthetics, dentistry, general, physiotherapy, psychology e veterinary, além de ASSETS.md e premium/ASSETS.md. Nenhum SVG é utilizado como fotografia padrão pelos renderizadores atuais A/B. Não foram criados, baixados ou apagados assets.
 
-A leitura do rascunho privado retornou 401 sem sessão administrativa. Apenas URL e chave publicável estão disponíveis localmente. Não foram extraídos cookies ou credenciais nem alteradas políticas. Revisão atual, template_id e diferenças reais entre customization_data e snapshot permanecem não confirmados. A compatibilidade dos três caminhos foi verificada em código e testes, sem declarar inspeção da sessão administrativa real.
+## Mapeamento final
 
-## Correção
+Todas as URLs padrão começam por /templates/clinics/shared/.
 
-Novo arquivo src/templates/clinics/shared/default-photography.ts: clínica geral mantém os PNGs; demais especialidades recebem os JPGs existentes, versionados e licenciados premium/waiting-area.jpg e premium/warm-interior.jpg. Ambos foram inspecionados como referências neutras de ambiente sem retratos/procedimentos e respondem 200 em produção. Nenhuma imagem foi criada ou baixada.
+| Seção | Template A | Template B |
+|---|---|---|
+| Hero | clinic-reception-hero.png | doctor-consultation-main.png |
+| Apresentação/atendimento | doctor-consultation-main.png | clinic-reception-hero.png |
+| Estrutura/galeria | clinic-room-structure.png | clinic-reception-hero.png, clinic-room-structure.png, consultation-detail.png |
+| Detalhe/apoio na galeria | consultation-detail.png e clinic-reception-hero.png | consultation-detail.png |
 
-premium/photography.ts e premium/index.tsx usam esses padrões nos cinco componentes. appointments/content.ts e components/prototypes/clinic-appointments-controls.tsx compartilham os padrões, inclusive ao editar legenda ou enquadramento no editor B.
+A distribuição mantém a composição existente de cada layout. Não houve mudança de CSS, cores, fontes ou layout.
 
-Personalizações têm precedência. null continua significando “Sem imagem”; galeria vazia continua vazia. Nenhum JSONB foi regravado. A recuperação após erro permanece sem ciclos e com legenda ilustrativa adequada. Layout, cores, fontes e CSS foram preservados.
+## Prioridade e compatibilidade
 
-## Validação
+1. null explícito continua removendo a fotografia. Galeria vazia continua vazia.
+2. Foto personalizada válida tem precedência, inclusive um caminho histórico escolhido explicitamente.
+3. Campo ausente ou undefined usa o PNG oficial da seção. Personalização antiga parcial e protótipos novos usam os mesmos padrões, sem regravar registros.
+4. Se a foto escolhida falha ao carregar, a recuperação existente tenta o PNG padrão local. Se ambos falham, mantém o aviso neutro e registra somente template/slot, sem dados sensíveis ou ciclos.
+5. Limpar o campo de caminho no editor restaura ausência/default. Somente a opção Sem imagem grava null. Strings vazias, URLs externas e caminhos inseguros continuam rejeitados pelo schema; não se tornaram opções implícitas de remoção.
 
-- ESLint, TypeScript e build de produção aprovados.
-- 153 testes aprovados, incluindo demais nichos e RLS.
-- Estética sem clinicDesign: cinco imagens em ambos os templates, no rascunho e na entrada reconstruída do snapshot, sem mutação dos dados aprovados.
-- Imagens personalizadas, remoção explícita e recuperação após falhas cobertas por testes.
-- Teste HTTP de produção aprovado para os oito templates e Estética A/B, com leitura direta e otimizada dos JPGs, republicação e despublicação simuladas sem gravação remota.
-- Snapshot público real, copiado sem alteração para transporte local isolado: resposta 200, cinco imagens, zero avisos e ambos os JPGs no HTML.
-- Inspeção visual em navegador e comparação da sessão administrativa real permanecem pendentes. Não declarar produção corrigida sem inspeção após distribuição do código.
+Não há como distinguir retrospectivamente um null legítimo de um null gravado por uma configuração anterior sem histórico suficiente. Por isso, nulls persistidos não são convertidos automaticamente. Nenhum UPDATE, migration ou alteração de publicação foi executado.
 
-Arquivos desta correção: shared/default-photography.ts (novo), premium/photography.ts, premium/index.tsx, appointments/content.ts, components/prototypes/clinic-appointments-controls.tsx, tests/clinic-templates.test.ts, tests/http/publication.test.ts e este relatório.
+O gerador atual constrói a personalização sem inserir URLs de fotografias ou clinicDesign padrão. O adaptador preserva clinicDesign quando existente; a resolução ocorre no renderizador comum ao editor, à prévia e à publicação. Não foi necessário modificar o motor A/B.
 
-## Distribuição
+## Snapshot público afetado
 
-É necessário novo deploy. O protótipo informado não precisa de republicação: o snapshot já contém a especialidade e passará a resolver os padrões. Não há migration ou atualização de publicações. Publicações com null explícito continuam sem imagem e só devem mudar por decisão humana no editor e republicação aprovada.
+Consulta de leitura em 05/11/2026 ao slug informado: template clinicas-a, especialidade Estética, publicação versão 1, sem clinicDesign. O HTML remoto respondeu 200, com cinco imagens e referências aos JPGs históricos: a correção intermediária está visível, mas os PNGs oficiais ainda não estão distribuídos como padrões nesse deploy.
 
-Nenhum commit, push, deploy, alteração de banco ou republicação foi realizado.
+Os quatro PNGs oficiais responderam 200 em produção. O snapshot real foi copiado sem alteração para transporte de teste local isolado. No build final, a mesma rota respondeu 200, com cinco imagens, zero avisos, os quatro PNGs oficiais presentes e nenhum dos JPGs históricos.
 
-Tentativa visual nesta sessão: o inventário do Computer Use retornou 'The browser access host is unavailable', sem abas controláveis. A validação visual do protótipo afetado não foi concluída. O servidor local de inspeção foi encerrado após a checagem HTTP.
+O snapshot não está incompleto: a ausência de personalização é válida e deve resolver os padrões oficiais. Esse protótipo não precisa ser republicado após o novo deploy. Publicações com foto personalizada explícita permanecem usando essa foto; se o administrador desejar alterá-la, deve editar e revisar a republicação. Não houve republicação automática.
+
+A leitura de rascunhos privados continua dependente de sessão administrativa. Não há sessão administrativa disponível neste ambiente, e a RLS foi preservada. Não foi possível comparar a revisão atual do rascunho com o snapshot nem auditar configurações privadas de toda a base.
+
+## Arquivos corrigidos
+
+- src/templates/clinics/shared/default-photography.ts: catálogo oficial, dimensões e resolução sem condicionamento por especialidade.
+- src/templates/clinics/premium/photography.ts e premium/index.tsx: padrões A provenientes do catálogo oficial.
+- src/templates/clinics/appointments/content.ts: padrões B oficiais em todas as especialidades.
+- src/components/prototypes/clinic-design-editor.tsx e clinic-appointments-controls.tsx: catálogo compartilhado e distinção entre limpar o campo e escolher Sem imagem.
+- tests/clinic-templates.test.ts e tests/http/publication.test.ts: regressões dos padrões oficiais, Estética, demais especialidades, personalização, ausência explícita e snapshot.
+- Este relatório substitui as conclusões da correção intermediária.
+
+## Verificação
+
+- ESLint: aprovado.
+- TypeScript: aprovado.
+- Suíte automatizada: 154 testes aprovados, incluindo demais nichos, preview privado, autorização, RLS e snapshots.
+- Build de produção: aprovado.
+- Teste HTTP de produção dos oito templates e Estética A/B: aprovado; os quatro PNGs são servidos diretamente e pelo otimizador Next Image.
+- Snapshot público real no build local: aprovado conforme comparação acima.
+- Sem diferenças nos arquivos de public; nenhum asset original alterado.
+
+A inspeção visual do ambiente publicado não foi concluída: o acesso automatizado ao navegador estava indisponível nesta sessão. HTML, respostas HTTP e testes locais não equivalem à validação visual remota. Um novo deploy é necessário, seguido da conferência visual do hero, apresentação e galeria no protótipo afetado, além do editor e prévia autenticados.
+
+Nenhum commit, push, deploy, alteração de banco ou republicação foi executado.

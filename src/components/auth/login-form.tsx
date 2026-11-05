@@ -1,6 +1,6 @@
 "use client";
-import { useActionState } from "react";
-import { ArrowRight, LoaderCircle } from "lucide-react";
+import { useActionState, useState } from "react";
+import { ArrowRight, Eye, EyeOff, LoaderCircle } from "lucide-react";
 import { loginAction } from "@/app/login/actions";
 export function LoginForm({
   configured,
@@ -10,6 +10,7 @@ export function LoginForm({
   initialMessage: string;
 }) {
   const [state, action, pending] = useActionState(loginAction, { message: "" });
+  const [passwordVisible, setPasswordVisible] = useState(false);
   return (
     <form action={action} className="login-form">
       <label htmlFor="email">E-mail</label>
@@ -24,16 +25,32 @@ export function LoginForm({
         disabled={!configured || pending}
       />
       <label htmlFor="password">Senha</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        autoComplete="current-password"
-        placeholder="Sua senha"
-        maxLength={1024}
-        required
-        disabled={!configured || pending}
-      />
+      <div className="login-password-field">
+        <input
+          id="password"
+          name="password"
+          type={passwordVisible ? "text" : "password"}
+          autoComplete="current-password"
+          placeholder="Sua senha"
+          maxLength={1024}
+          required
+          disabled={!configured || pending}
+        />
+        <button
+          type="button"
+          className="login-password-toggle"
+          aria-label={passwordVisible ? "Ocultar senha" : "Mostrar senha"}
+          aria-controls="password"
+          disabled={!configured || pending}
+          onClick={() => setPasswordVisible((visible) => !visible)}
+        >
+          {passwordVisible ? (
+            <EyeOff size={20} aria-hidden="true" />
+          ) : (
+            <Eye size={20} aria-hidden="true" />
+          )}
+        </button>
+      </div>
       <div className="login-feedback" role="status" aria-live="polite">
         {state.message || initialMessage}
       </div>

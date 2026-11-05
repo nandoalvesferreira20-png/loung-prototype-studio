@@ -1706,6 +1706,42 @@
   background: var(--lt-hover);
   color: var(--lt-muted);
 }
+.studio-ui .login-password-field {
+  position: relative;
+}
+.studio-ui .login-password-field input {
+  padding-right: 54px;
+}
+.studio-ui .login-password-toggle {
+  position: absolute;
+  right: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--lt-radius);
+  background: transparent;
+  color: var(--lt-muted);
+  cursor: pointer;
+}
+.studio-ui .login-password-toggle:hover:not(:disabled) {
+  background: var(--lt-off-white);
+  color: var(--lt-black);
+}
+.studio-ui .login-password-toggle:focus-visible {
+  outline: 2px solid var(--lt-black);
+  outline-offset: -2px;
+  background: var(--lt-lime);
+  color: var(--lt-black);
+}
+.studio-ui .login-password-toggle:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
 .studio-ui .login-form .button {
   min-height: 48px;
   font-size: 13px;

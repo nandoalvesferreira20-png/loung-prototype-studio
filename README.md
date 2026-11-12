@@ -182,9 +182,6 @@ As capturas abaixo devem ser adicionadas a partir da interface real da aplicaç�
 
 ![Gerador de protótipos](docs/screenshots/gerador.png)
 
-### Editor visual
-
-![Editor](docs/screenshots/editor.png)
 
 ### Central de publicações
 

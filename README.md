@@ -1,195 +1,378 @@
-# Loung Prototype Studio — Fase 4.1
+# 🚀 Loung Prototype Studio
 
-Ferramenta interna da Loung Tech. Next.js 16 App Router, React, TypeScript rigoroso, Tailwind CSS, Lucide e Supabase Auth/PostgreSQL. O design administrativo aprovado foi preservado.
+### Plataforma de geração, personalização e publicação de protótipos web
 
-## Estado desta entrega
+![Next.js](https://img.shields.io/badge/Next.js-16-171717?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
-Autenticação e autorização implementadas no código. **A integração Supabase só pode ser considerada validada após configurar um projeto, aplicar as migrations e executar os testes reais.** Sem configuração válida, o acesso privado permanece bloqueado e `/login` informa a pendência; não há bypass demonstrativo.
+O **Loung Prototype Studio** é uma plataforma desenvolvida para automatizar a criação de protótipos profissionais de sites a partir de informações de potenciais clientes.
 
-Importação CSV/XLSX, histórico, indicadores e gerenciamento utilizam dados persistidos. Os oito templates A/B possuem prévia privada. A Fase 5.1 implementa publicação manual por snapshot aprovado, links `/p/[slug]`, republicação e despublicação. Consulte o [guia de publicação e configuração](docs/publicacao-fase-5.1.md), o [motor da Fase 3.1](docs/geracao-fase-3.1.md) e a [importação da Fase 2.2](docs/importacao-fase-2.2.md). Nenhum dado fictício é inserido automaticamente no Supabase. A migration incremental de publicação deve ser revisada e aplicada antes de usar o fluxo remoto.
+Criado no contexto da **Loung Tech**, o sistema transforma dados importados de planilhas em apresentações visuais personalizadas, permitindo editar, visualizar e publicar protótipos por meio de links individuais.
 
-## Executar
+A proposta é unir **desenvolvimento web, automação comercial e personalização de interfaces** em uma única ferramenta.
 
-Use Node.js **24 LTS** e npm (mínimo Node.js 22.15, necessário para `--use-system-ca`). Os comandos de integração utilizam `--env-file-if-exists`.
+🌐 **Aplicação:** https://loung-prototype-studio.vercel.app/
 
-```sh
-npm ci
-# Copie .env.example para .env.local e preencha as variáveis.
-npm run dev
+> **Status:** projeto em desenvolvimento contínuo. A área administrativa exige autenticação e autorização. A disponibilidade das funcionalidades em produção depende da configuração do ambiente e das migrations do banco de dados.
+
+---
+
+## 🎯 O problema
+
+Na prospecção de serviços digitais, apresentar uma solução visual personalizada pode exigir várias etapas manuais:
+
+- Analisar as informações de uma empresa.
+- Selecionar um modelo visual adequado ao segmento.
+- Personalizar nome, textos, imagens e identidade.
+- Preparar uma demonstração navegável.
+- Publicar o material.
+- Organizar os links para apresentação comercial.
+
+Repetir esse processo individualmente torna a operação mais trabalhosa.
+
+O Loung Prototype Studio foi criado para organizar essas etapas e facilitar a produção de demonstrações web personalizadas.
+
+## 💡 A solução
+
+A plataforma permite importar informações comerciais, associar empresas a templates específicos e gerar protótipos com estrutura visual reutilizável.
+
+O processo combina geração estruturada, personalização e publicação.
+
+```text
+        IMPORTAÇÃO DE LEADS
+               |
+               v
+       CLASSIFICAÇÃO POR NICHO
+               |
+               v
+       SELEÇÃO DE TEMPLATE
+               |
+               v
+       GERAÇÃO DO PROTÓTIPO
+               |
+               v
+      PERSONALIZAÇÃO / PREVIEW
+               |
+               v
+       REVISÃO E PUBLICAÇÃO
+               |
+               v
+       LINK PÚBLICO INDIVIDUAL
 ```
 
-Abra http://localhost:3000. `/` redireciona para `/dashboard`, que exige autorização. No PowerShell com bloqueio a scripts, utilize `npm.cmd`.
+O resultado é um fluxo centralizado para criação e gerenciamento de protótipos comerciais.
+
+---
+
+## ✨ Principais funcionalidades
+
+### 📥 1. Importação de leads
+
+- Importação de planilhas CSV e XLSX.
+- Mapeamento de informações.
+- Validação de dados.
+- Identificação de registros duplicados.
+- Histórico de importações.
+- Persistência no banco de dados.
+
+Os dados importados podem ser utilizados na geração dos protótipos.
+
+### 🏢 2. Templates por segmento
+
+O sistema possui templates direcionados a quatro segmentos comerciais, com duas variantes por nicho:
+
+| Segmento | Template A | Template B |
+|---|---|---|
+| Clínicas | Apresentação institucional | Abordagem alternativa |
+| Advocacia | Estilo clássico | Estilo moderno |
+| Imobiliárias | Apresentação premium | Apresentação pessoal |
+| Restaurantes | Identidade gastronômica premium | Cardápio digital |
+
+Cada template possui características visuais e estruturais adaptadas ao segmento.
+
+**Total: oito templates A/B**, com documentação específica no repositório.
+
+### ⚙️ 3. Geração de protótipos
+
+- Associação de leads aos templates.
+- Geração individual e em lote.
+- Reutilização de estruturas predefinidas.
+- Personalização de informações.
+- Controle do estado dos protótipos.
+- Persistência das configurações.
+
+A geração estruturada ajuda a manter consistência entre protótipos, sem exigir a construção manual de cada página.
+
+### 🎨 4. Personalização visual
+
+O editor permite trabalhar com elementos como:
+
+- Cores.
+- Identidade visual.
+- Logotipo.
+- Títulos e descrições.
+- Imagens.
+- Conteúdos e serviços.
+- Organização de seções.
+
+O objetivo é transformar um template reutilizável em uma demonstração alinhada ao contexto de cada empresa.
+
+### 👁️ 5. Visualização e revisão
+
+- Prévia dos templates.
+- Visualização das personalizações.
+- Revisão antes da publicação.
+- Navegação em diferentes tamanhos de tela.
+- Separação entre ambiente administrativo e páginas públicas.
+
+### 🌐 6. Publicação de protótipos
+
+O sistema utiliza publicação por snapshots, preservando uma versão aprovada do protótipo.
+
+Funcionalidades:
+
+- Publicação manual.
+- Links públicos individuais.
+- Rotas no formato `/p/[slug]`.
+- Republicação.
+- Despublicação.
+- Gerenciamento do estado de publicação.
+
+Esse modelo separa o conteúdo em edição da versão apresentada ao público.
+
+### 📋 7. Central de publicações
+
+- Consulta dos protótipos publicados.
+- Busca e filtros.
+- Paginação.
+- Seleção de registros.
+- Organização dos links públicos.
+- Ações de gerenciamento de publicações.
+- Exportação de informações.
+
+### 🔐 8. Autenticação e autorização
+
+- Login com Supabase Auth.
+- Área administrativa protegida.
+- Controle de acesso por associação de usuários autorizados.
+- Validações de autorização no servidor.
+- Proteção de dados por Row Level Security (RLS).
+
+O projeto foi concebido inicialmente como ferramenta interna, sem cadastro público de usuários.
+
+---
+
+## 📸 Demonstração visual
+
+As capturas abaixo devem ser adicionadas a partir da interface real da aplicação.
+
+### Dashboard administrativo
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+### Gerenciamento de leads
+
+![Leads](docs/screenshots/leads.png)
+
+### Geração de protótipos
+
+![Gerador de protótipos](docs/screenshots/gerador.png)
+
+### Editor visual
+
+![Editor](docs/screenshots/editor.png)
+
+### Central de publicações
+
+![Publicações](docs/screenshots/publicacoes.png)
+
+> As imagens acima são placeholders de documentação. Adicione os arquivos correspondentes em `docs/screenshots/` antes de publicar o README.
+
+---
+
+## 🛠️ Stack tecnológica
+
+| Camada | Tecnologia | Responsabilidade |
+|---|---|---|
+| Frontend | Next.js 16 | Aplicação web e roteamento |
+| Interface | React 19 | Componentes e interatividade |
+| Linguagem | TypeScript | Tipagem e manutenção |
+| Estilização | Tailwind CSS 4 | Sistema visual |
+| Backend | Next.js Server Actions e Route Handlers | Operações no servidor |
+| Banco de dados | PostgreSQL / Supabase | Persistência |
+| Autenticação | Supabase Auth | Identidade e sessões |
+| Segurança | PostgreSQL RLS | Controle de acesso aos dados |
+| Validação | Zod | Validação de estruturas |
+| Planilhas | Papa Parse e read-excel-file | Leitura de CSV e XLSX |
+| Deploy | Vercel | Hospedagem da aplicação |
+
+---
+
+## 🏗️ Arquitetura
+
+O projeto utiliza uma arquitetura baseada no Next.js App Router, com separação entre interface administrativa, lógica de negócio, persistência e páginas públicas.
+
+```text
+                  ADMINISTRADOR
+                        |
+                        v
+                NEXT.JS / REACT
+                        |
+              +---------+---------+
+              |                   |
+              v                   v
+       ÁREA ADMINISTRATIVA    PÁGINAS PÚBLICAS
+              |                   |
+              v                   v
+       AUTENTICAÇÃO         SNAPSHOTS PUBLICADOS
+              |
+              v
+       CAMADA DE SERVIDOR
+              |
+       +------+------+
+       |             |
+       v             v
+   SUPABASE AUTH   POSTGRESQL
+                     |
+                     v
+              LEADS / TEMPLATES
+              PROTÓTIPOS
+              PUBLICAÇÕES
+```
+
+### Decisões arquiteturais
+
+**Separação entre edição e publicação**
+
+A utilização de snapshots permite manter uma versão pública aprovada independentemente de alterações posteriores no protótipo em edição.
+
+**Persistência estruturada**
+
+Os dados de leads, templates, protótipos e publicações são organizados em tabelas relacionais, com personalizações estruturadas em JSONB.
+
+**Controle de acesso**
+
+A autorização administrativa é verificada no servidor e reforçada por políticas de acesso no banco de dados.
+
+**Templates reutilizáveis**
+
+O uso de estruturas específicas por nicho permite ampliar a variedade de demonstrações sem duplicar toda a implementação.
+
+---
+
+## 📂 Estrutura do repositório
+
+```text
+loung-prototype-studio/
+├── public/                 # Imagens e recursos estáticos
+├── src/
+│   ├── app/                # Páginas e rotas
+│   │   ├── (admin)/        # Área administrativa
+│   │   ├── api/            # Endpoints
+│   │   ├── login/          # Autenticação
+│   │   ├── p/              # Protótipos publicados
+│   │   └── preview/        # Visualização
+│   └── ...                 # Componentes e serviços
+├── supabase/
+│   └── migrations/         # Evolução do banco
+├── docs/                   # Documentação funcional
+├── scripts/                # Scripts auxiliares
+├── tests/                  # Testes automatizados
+├── package.json
+└── README.md
+```
+
+---
+
+## 🚀 Executando localmente
+
+### Pré-requisitos
+
+- Node.js 24 LTS recomendado.
+- npm.
+- Projeto Supabase configurado.
+- Migrations aplicadas.
+- Usuário autorizado no ambiente administrativo.
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/nandoalvesferreira20-png/loung-prototype-studio.git
+
+cd loung-prototype-studio
+```
+
+### 2. Instale as dependências
+
+```bash
+npm ci
+```
+
+### 3. Configure o ambiente
+
+Crie o arquivo `.env.local` com as configurações públicas do seu projeto Supabase:
 
 ```dotenv
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-Obtenha Project URL e **publishable key** (`sb_publishable_...`) em Connect/API Keys do projeto. Não use `sb_secret_...`, `service_role` ou JWT legado no lugar dessa chave. O código rejeita configuração ausente/inválida. `.env.local` e `.env.test.local` são ignorados pelo Git. Nenhuma chave administrativa secreta é necessária na aplicação.
+Utilize a URL e a chave publicável do mesmo projeto.
 
-## Configurar o Supabase
+**Atenção:** a aplicação não deve receber chaves administrativas secretas nessas variáveis. Não publique credenciais ou arquivos de ambiente contendo segredos.
 
-### Diagnosticar falhas de login no desenvolvimento
+A configuração inicial do banco e a autorização dos usuários estão documentadas no repositório.
 
-O terminal do servidor registra eventos `[auth]` somente fora de produção, sem e-mail, senha, cookies, tokens ou chaves. Os erros incluem origem, etapa, nome, tipo, código, status e mensagem técnica controlada, além de até três causas aninhadas sanitizadas. Mensagens e nomes desconhecidos são omitidos; nenhum objeto bruto ou stack é impresso. `invalid_credentials` não comprova que a senha está errada: confira também a conta e o projeto configurado. `email_not_confirmed`, limite de tentativas, chave inválida e falhas de rede não devem ser interpretados como senha incorreta.
+### 4. Execute a aplicação
 
-`server_client_creating`/`server_client_created` delimitam a criação do cliente. `sign_in_started` antecede a chamada ao SDK; `transport_request_failed` captura DNS/TLS/rede antes que o SDK descarte a causa original. `sign_in_failed` indica erro retornado pelo SDK; `sign_in_exception` indica uma exceção lançada durante a chamada, sem substituir o erro por uma exceção genérica da aplicação.
-
-Na investigação local, a consulta ao endpoint público `/auth/v1/settings` falhou com `TypeError: fetch failed`, causa `SELF_SIGNED_CERT_IN_CHAIN`. A mesma consulta, com a mesma configuração e `--use-system-ca`, respondeu HTTP 200. Por isso os scripts `dev`, `start`, `build` e integração usam os certificados confiáveis do sistema operacional, mantendo a validação TLS. Reinicie o servidor com `npm run dev` para aplicar. Em execuções externas aos scripts, configure a confiança do Node conforme a [documentação oficial](https://nodejs.org/learn/http/enterprise-network-configuration).
-
-Execute `npm run auth:check` para verificar configuração/conectividade sem login e sem dados privados. HTTP 200 confirma a conexão e aceitação da chave pública; não comprova senha, associação em `admin_users` ou sessão de uma conta. Não desative a validação TLS.
-
-`admin_forbidden` significa que o Auth validou a identidade, mas não encontrou a associação em `admin_users`; `admin_lookup_failed` significa erro na consulta, não ausência de permissão confirmada. `session_validation_failed` e `session_cookie_write_failed` identificam problemas posteriores à autenticação. As ações de login/logout exigem gravação dos cookies antes de indicar sucesso. Os destinos continuam fixos em `/dashboard` e `/login`.
-
-Se houver `configuration_missing_or_invalid`, confira as duas variáveis descritas acima e reinicie o servidor (ou refaça o deploy). `.env.example` não é carregado automaticamente. A URL e a chave devem pertencer ao mesmo projeto. Não envie credenciais para diagnosticar: reproduza a tentativa no ambiente afetado e consulte apenas os eventos seguros. Sem o retorno dessa tentativa, não é possível determinar a causa operacional apenas pela mensagem genérica da interface.
-
-1. Crie/selecione um projeto dedicado ao Studio. Para a validação inicial, use homologação sem dados reais.
-2. Em **Authentication → Sign In / Providers → User Signups**, desative **Allow new users to sign up**. Dependendo da versão do painel, a opção aparece em Auth Settings. Mantenha e-mail/senha habilitado e **Anonymous Sign-Ins desabilitado**. Esconder a tela de registro não substitui desabilitar cadastro no serviço.
-3. Em **Authentication → URL Configuration**, configure Site URL com a URL correta da aplicação (localhost no desenvolvimento, domínio HTTPS em produção). Esta fase não implementa callbacks OAuth, convites ou recuperação de senha.
-4. No **SQL Editor**, como `postgres`, execute uma única vez cada arquivo completo, nesta ordem:
-   - `supabase/migrations/202610270001_foundation.sql`
-   - `supabase/migrations/202610270002_template_catalog.sql`
-5. Cada migration usa transação, sem DROP/reset de tabelas existentes. Para projetos gerenciados pela CLI, use o fluxo `supabase link` / `supabase db push`; não misture aplicação manual e CLI sem reconciliar o histórico.
-6. Em API/Data API Settings, mantenha o schema `private` **fora de Exposed Schemas e Extra Search Path**. As policies chamam a função qualificada diretamente; não é necessário expô-la por RPC.
-7. Em **Authentication → Users → Add user → Create new user**, crie uma conta por integrante, com senha forte e exclusiva, confirmando a conta conforme o procedimento interno. Não compartilhe contas ou tokens. Nenhuma tela de registro foi criada.
-8. Autorize os integrantes conforme o procedimento abaixo. Uma conta autenticada não recebe acesso automaticamente.
-9. Preencha `.env.local`, reinicie o servidor e teste login/logout. Na Vercel, configure as mesmas duas variáveis no ambiente correto e refaça o deploy. Esta entrega não publica automaticamente.
-
-### Autorizar integrantes
-
-Somente o responsável com acesso administrativo ao **painel Supabase/SQL Editor** deve executar o SQL. Copie o UUID da conta em Authentication → Users e confira seu e-mail. Substitua o marcador antes de executar:
-
-```sql
-select id, email from auth.users where id = '<UUID_DO_INTEGRANTE>'::uuid;
-
-insert into public.admin_users(user_id)
-values ('<UUID_DO_INTEGRANTE>'::uuid)
-on conflict (user_id) do nothing;
+```bash
+npm run dev
 ```
 
-Para revogar acesso:
+Acesse:
 
-```sql
-delete from public.admin_users
-where user_id = '<UUID_DO_INTEGRANTE>'::uuid;
+http://localhost:3000
+
+No Windows com PowerShell, se o comando `npm` estiver bloqueado pela política de execução, utilize:
+
+```powershell
+npm.cmd run dev
 ```
 
-A próxima consulta protegida será negada, mesmo com sessão Auth válida. Revogação não remove informações já exibidas ou copiadas. Se necessário, encerre também sessões/remova a conta pelo painel Auth. Não crie endpoint, Server Action ou formulário de autoatribuição. Nem administradores podem alterar `admin_users` usando o cliente da aplicação/Data API.
+A aplicação exige uma conta administrativa autorizada para acessar as páginas privadas.
 
-## Segurança e sessão
+---
 
-- `src/lib/supabase/browser.ts`: cliente de navegador tipado, somente com chave publicável. Disponível para funcionalidades futuras; o login atual usa Server Action.
-- `src/lib/supabase/server.ts`: cliente isolado por requisição com cookies SSR (SameSite Lax, path `/`, Secure em produção). HTTPS é necessário em produção. O SDK SSR também utiliza cookies no navegador; não se presume proteção HttpOnly. Evite scripts de terceiros não confiáveis.
-- `src/proxy.ts` e `src/lib/supabase/proxy.ts`: renovação com `getClaims`, propagação dos cookies à requisição/resposta e `private, no-store`. O proxy não substitui autorização.
-- `getAdminAccess` valida a identidade no servidor com `auth.getUser()` e consulta a associação da própria conta em `admin_users`. Não confia em `getSession`, cookies sem validação ou `user_metadata` para autorizar.
-- O layout **e cada uma das cinco páginas** chamam `requireAdminPage`, inclusive em renderizações que reutilizam o layout.
-- A camada de dados chama `requireAdmin()` antes das consultas. Futuras Server Actions/Route Handlers devem fazer o mesmo. Não usar cache global para identidade/autorização/dados administrativos.
-- `GET /api/admin/session` retorna somente `{authorized:true}` para admin, 401 sem sessão, 403 sem associação e 503 em falha de configuração/validação. Nunca retorna leads.
-- Login chama `signInWithPassword`, verifica associação administrativa e encerra a sessão recém-criada se não houver autorização. Erros não retornam detalhes internos, tokens ou senhas. Redirecionamento é fixo, sem URL arbitrária fornecida pelo cliente.
-- Logout usa POST via Server Action e `signOut({scope:'local'})`. Encerra a sessão atual, sem afirmar encerrar outros dispositivos. Login é deliberadamente público; logout permanece disponível para encerrar uma sessão cuja autorização tenha sido revogada.
-- Server Actions mantêm a validação de origem do Next.js. Não há logout por GET ou cadastro público. Os limites de tentativas são os do Supabase Auth; revise os rate limits no painel antes de produção.
-- RLS também protege chamadas diretas à Data API. Não há service role na aplicação, política pública de leads, rota pública de protótipos, organizações ou permissões adicionais.
+## 🧪 Testes e qualidade
 
-Padrão obrigatório para futuras operações no servidor:
+O projeto utiliza ferramentas para validação estática, testes automatizados e padronização de código.
 
-```ts
-await requireAdmin();
-const supabase = await createServerSupabaseClient();
-// Consultar/gravar com tipos, tratar error e preservar RLS/constraints.
-```
-
-## Banco e migrations
-
-| Tabela        | Finalidade e garantias                                                                                                                                    |
-| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `admin_users` | `user_id` PK/FK de `auth.users`, `created_at`. Cliente só lê a própria associação; sem grants de escrita.                                                 |
-| `imports`     | UUID, arquivo, status, contagens e datas. Contagens não negativas/coerentes e término consistente com status.                                             |
-| `leads`       | UUID, importação opcional, nome, nicho, especialidade separada, contatos, endereço, descrição, serviços `text[]`, origem/referência externa e timestamps. |
-| `templates`   | UUID, slug único, nome, nicho, variante, descrição/status e timestamps. `UNIQUE(niche, variant)` limita A/B por nicho.                                    |
-| `prototypes`  | UUID, lead único, template, slug único, status, personalização `jsonb` objeto, datas e chave interna de nicho.                                            |
-
-Enums: `niche` (`clinicas`, `advocacia`, `imobiliarias`, `restaurantes`), `template_variant` (`A`, `B`), `import_status` (`pending`, `processing`, `completed`, `partial`, `failed`), `template_status` (`planned`, `active`, `archived`), `publication_status` (`draft`, `review`, `published`). Rótulos demonstrativos em português ficam separados dos estados persistidos.
-
-Todos os IDs persistidos são UUIDs; identificadores conceituais da Fase 1 continuam somente nos exemplos antigos. O catálogo usa slugs como `clinicas-a` e IDs gerados pelo banco. A migration original cadastra os oito templates como `planned`; a migration da Fase 3.1 ativa os modelos oficiais ainda planejados para gerar registros privados, preservando os arquivados. Isso não significa que os oito sites completos já estejam implementados.
-
-`prototypes.lead_id` é único. A coluna adicional `prototypes.niche`, derivada do lead por trigger, permite duas FKs compostas para garantir compatibilidade com o template sob concorrência. Alterações incompatíveis no nicho de leads/templates associados são restringidas pelas FKs. Triggers atualizam `updated_at` e a edição incrementa `revision`. Remover um lead remove seu protótipo; remover um template em uso é impedido; remover uma importação preserva leads, limpando a referência. A Fase 2.2 acrescenta deduplicação e resultados por linha; a Fase 3.1 acrescenta recibos idempotentes em `prototype_generation_requests` e validação do JSONB de personalização.
-
-### RLS
-
-Ativa nas cinco tabelas da fundação e nas tabelas incrementais `import_lead_results` e `prototype_generation_requests`. `anon` não tem grants sobre elas. `authenticated` tem SELECT/INSERT/UPDATE/DELETE nas quatro tabelas operacionais originais, sempre sujeitos a `USING` e `WITH CHECK` de `private.is_admin()`, e SELECT/INSERT nas duas tabelas de resultados/recibos. Sem TRUNCATE, grants de DDL ou escrita em associações. Os triggers de protótipos também exigem modelos ativos, dados válidos, identidade estável e ausência de publicação nesta fase.
-
-`private.is_admin()` é `SECURITY DEFINER`, dono `postgres`, `search_path = ''`, nomes qualificados e nenhum argumento de usuário. Retorna apenas se `auth.uid()` possui associação. EXECUTE é revogado de PUBLIC/anon e concedido a authenticated. A função não deve ser exposta na API. O proprietário ignora RLS apenas para essa consulta estreita; não usamos FORCE RLS em `admin_users`, evitando reentrada na policy. A leitura da própria associação usa diretamente `user_id = auth.uid()`, sem recursão. Funções de triggers são `SECURITY INVOKER`, sem EXECUTE público.
-
-Na Fase 5.1, somente snapshots ativos de `published_prototypes` possuem leitura anônima, limitada às colunas públicas. Leads e protótipos administrativos continuam privados. As RPCs de publicação exigem autorização administrativa no banco; nenhum acesso público é concedido às tabelas privadas.
-
-## Arquivos principais
-
-```text
-src/app/login/                 Página e Server Actions de login/logout
-src/app/(admin)/               Páginas aprovadas e guards no servidor
-src/app/api/admin/session/     Verificação mínima de autorização
-src/components/auth/          Formulário de login e botão de saída
-src/config/supabase.ts        Validação da configuração pública
-src/lib/auth/                 Identidade, autorização e fluxos testáveis
-src/lib/supabase/             Clientes SSR/browser e renovação de cookies
-src/proxy.ts                  Proxy do Next.js 16
-src/services/database.ts      Leituras persistidas tipadas e protegidas
-src/services/contracts.ts     Contratos de geração/importação futura
-src/types/database.ts         Espelho tipado das migrations
-supabase/migrations/          Schema/RLS e catálogo versionados
-tests/*.test.ts               Testes unitários e estruturais
-tests/integration/            Suíte que exige Supabase real
-tests/http/                   Bloqueio HTTP sem configuração
-```
-
-Depois de aplicar as migrations, regenere os tipos usando a CLI Supabase:
-
-```sh
-supabase gen types typescript --project-id <PROJECT_ID> --schema public
-```
-
-O espelho atual foi escrito a partir do SQL, **não gerado de um banco já aplicado**. Salve a saída em UTF-8, compare antes de substituir `src/types/database.ts` e execute TypeScript novamente. Não imprima credenciais.
-
-## Verificação
-
-```sh
-npm run lint
-npm run typecheck
+```bash
+# Testes unitários
 npm test
-npm run test:integration
+
+# Verificação de tipos
+npm run typecheck
+
+# Análise estática
+npm run lint
+
+# Verificação de formatação
+npm run format:check
+
+# Build de produção
 npm run build
-npm start
 ```
 
-`npm test` executa testes unitários do fluxo/guards (login válido/inválido, ausência de sessão, conta não autorizada, administrador, logout, indisponibilidade), catálogo, filtros e checagens estruturais do SQL. **Mocks e inspeção do SQL não comprovam Auth, RLS ou execução das migrations em PostgreSQL.**
+Também existem comandos específicos para testes HTTP e integração:
 
-### Integração real
-
-Use um **projeto de homologação dedicado**, com migrations aplicadas, uma conta admin autorizada e outra conta Auth sem registro em `admin_users`. Não use contas/dados reais. Inicie a aplicação apontando para esse projeto. Configure `.env.test.local` (ignorado pelo Git):
-
-```dotenv
-RUN_SUPABASE_INTEGRATION=1
-TEST_APP_URL=http://localhost:3000
-TEST_ADMIN_EMAIL=
-TEST_ADMIN_PASSWORD=
-TEST_NON_ADMIN_EMAIL=
-TEST_NON_ADMIN_PASSWORD=
+```bash
+npm run test:http
+npm run test:integration
 ```
 
-As variáveis NEXT_PUBLIC devem estar em `.env.local`. Execute `npm run test:integration`. Sem a flag, o teste fica **SKIPPED**, nunca “integração aprovada”. Com a flag e configuração incompleta, falha explicitamente.
-
-A suíte usa Auth real, cookies SSR, Data API e HTTP: login válido/inválido, autorização, bloqueio anônimo/não admin, prevenção de autoatribuição (inclusive por admin), gravação/leitura admin, constraints e bloqueio das cinco páginas/endpoint. Cria fixtures com UUIDs aleatórios e remove somente esses registros em `finally`, encerrando as sessões. Falhas de limpeza são reportadas; confira registros com `source = 'automated-security-test'` e arquivo/slug `security-test-<UUID>` da execução. Nenhum teste usa service role.
-
-Logout não invalida retroativamente um JWT de acesso copiado até ele expirar; o teste verifica sessão/cookies locais após a saída. Revogar a associação administrativa impede novas operações protegidas por RLS, mesmo com JWT ainda válido.
-
-### HTTP sem Supabase
-
-Inicie a aplicação sem as variáveis Supabase, defina `TEST_APP_URL` para ela e execute `npm run test:http`. Verifica login informativo, redirecionamento das cinco rotas e resposta 503 sem dados no endpoint. Não substitui a suíte Supabase real.
-
-## Pendências externas e Fase 4.1
-
-Deploy nativo Next.js na Vercel, sem `vercel.json`, Docker ou serviços auxiliares. Configure as duas variáveis e HTTPS. **Pendências externas:** projeto Supabase, cadastro fechado, aplicação das migrations, criação/autorização das contas, regeneração dos tipos e execução da suíte real. Nenhum desses passos é presumido como realizado.
-
-Fase 4.1: dois sites completos para Clínicas, seis configurações de especialidade, assets conceituais locais e prévia administrativa em cinco larguras. A revisão visual em navegador e a integração autenticada em homologação permanecem pendentes conforme o guia. Demais nichos, editor visual, publicação, IA, integração direta com Prospect, organizações e pagamentos continuam fora do escopo. Nenhum deploy, commit ou push é feito automaticamente.
-
-Referências oficiais: [SSR no Next.js](https://supabase.com/docs/guides/auth/server-side/creating-a-client?framework=nextjs), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [funções e privilégios](https://supabase.com/docs/guides/database/functions).
+Os
